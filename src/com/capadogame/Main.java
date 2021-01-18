@@ -1,16 +1,13 @@
 package com.capadogame;
 
-import javax.swing.SwingUtilities;
-
 public class Main {
-
+	
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				CardLayoutWindow frame = new CardLayoutWindow("CapadoGame6");
-				frame.setVisible(true);
-			}
-		});
+		Form form = new Form();
+		form.setVisible(true);
+		form.setSize(800, 500);
+		form.setLocationRelativeTo(null);
+		form.setDefaultCloseOperation(Form.EXIT_ON_CLOSE);
 	}
 
 }
