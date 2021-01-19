@@ -31,24 +31,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ShopPanel extends JPanel implements ActionListener {
-	int areaWidth, areaHeight;
-	Trophy trophy;
-	Heart heart;
-	Bird bird;
-	Boolean[] birdPurchase;
-	JLabel jlBird;
-	ImageIcon iiSetting, iiStart, iiProfil, iiShop;
-	BufferedImage biTrophy, biHeart;
-	JButton jbSetting, jbStart, jbProfil,jbShop;
-	JPanel topBar, centerBox, bottomBar;
-	BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
-	BorderLayout borderLayoutP;
-	CardLayout cardManagerBird;
-	JPanel birdTitle;
-	FlowLayout flowLayoutBT;
-	JPanel birdShop, birdShop0, birdShop1, birdShop2, birdShop3, birdShop4;
-	String dataPath;
-	String fileNameBirdPurchase = "dataBirdPurchase";
+	private int areaWidth, areaHeight;
+	private Trophy trophy;
+	private Heart heart;
+	private Bird bird;
+	private Boolean[] birdPurchase;
+	private JLabel jlBird;
+	private ImageIcon iiSetting, iiStart, iiProfil, iiShop;
+	private BufferedImage biTrophy, biHeart;
+	private JButton jbSetting, jbStart, jbProfil,jbShop;
+	private JPanel topBar, centerBox, bottomBar;
+	private BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
+	private BorderLayout borderLayoutP;
+	private CardLayout cardManagerBird;
+	private JPanel birdTitle;
+	private FlowLayout flowLayoutBT;
+	private JPanel birdShop, birdShop0, birdShop1, birdShop2, birdShop3, birdShop4;
+	private String dataPath;
+	private String fileNameBirdPurchase = "dataBirdPurchase";
 	
 	public ShopPanel (CardLayoutWindow parent, int areaWidth, int areaHeight, 
 			Trophy trophy, Heart heart, Bird bird) {
