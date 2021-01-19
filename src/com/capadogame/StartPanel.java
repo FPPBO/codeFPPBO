@@ -23,16 +23,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class StartPanel extends JPanel {
-	int areaWidth, areaHeight;
-	Trophy trophy;
-	Heart heart;
-	JLabel jlStart;
-	ImageIcon iiSetting, iiPlay, iiStart, iiProfil, iiShop;
-	BufferedImage biSetting, biTrophy, biHeart;
-	JButton jbSetting, jbPlay, jbStart, jbProfil, jbShop;
-	JPanel topBar, centerBox, bottomBar;
-	BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
-	BorderLayout borderLayoutP;
+	private int areaWidth, areaHeight;
+	private Trophy trophy;
+	private Heart heart;
+	private JLabel jlStart;
+	private ImageIcon iiSetting, iiPlay, iiStart, iiProfil, iiShop;
+	private BufferedImage biSetting, biTrophy, biHeart;
+	private JButton jbSetting, jbPlay, jbStart, jbProfil, jbShop;
+	private JPanel topBar, centerBox, bottomBar;
+	private BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
+	private BorderLayout borderLayoutP;
 	
 	public StartPanel (CardLayoutWindow parent, int areaWidth, int areaHeight, 
 			Trophy trophy, Heart heart) {	
