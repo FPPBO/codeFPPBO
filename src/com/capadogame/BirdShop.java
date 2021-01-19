@@ -89,7 +89,7 @@ public class BirdShop extends JPanel {
 		jtaDescription.setOpaque(false);
 		jtaDescription.setEditable(false);
 		
-        c.fill = GridBagConstraints.HORIZONTAL;
+        	c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 1;
 		c.insets = new Insets(0, 30, 0, 0);
@@ -103,13 +103,13 @@ public class BirdShop extends JPanel {
 				BorderFactory.createLineBorder(Color.WHITE, 2, true),
 				BorderFactory.createEmptyBorder(3, 20, 3, 20)));
 		jbSelect.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                bird.setType(type);
-                jbSelect.setEnabled(false);
-    			jbSelect.setText("Selected");
-    			jbSelect.setBackground(new Color(217, 217, 217));
-            }
-        });
+			public void actionPerformed(ActionEvent e) {
+				bird.setType(type);
+				jbSelect.setEnabled(false);
+				jbSelect.setText("Selected");
+				jbSelect.setBackground(new Color(217, 217, 217));
+			}
+		});  
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weighty = 1;
@@ -126,16 +126,16 @@ public class BirdShop extends JPanel {
 				BorderFactory.createEmptyBorder(3, 20, 3, 20)));
 		setButton(bird, birdPurchase);
 		jbPurchase.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	int choose = JOptionPane.showConfirmDialog(parent, 
-						"Are you sure you want to buy \"" + title + "\"?", 
-						"Confirm Buy", JOptionPane.YES_NO_OPTION);
+			public void actionPerformed(ActionEvent e) {
+				int choose = JOptionPane.showConfirmDialog(parent, 
+									   "Are you sure you want to buy \"" + title + "\"?", 
+									   "Confirm Buy", JOptionPane.YES_NO_OPTION);
 				if (choose == JOptionPane.YES_OPTION) {
 					birdPurchase[type] = true;
-	    			setButton(bird, birdPurchase);
+					setButton(bird, birdPurchase);
 				} 
-            }
-        });
+			}
+		});
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weighty = 1;
