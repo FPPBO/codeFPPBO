@@ -18,10 +18,10 @@ public class Heart {
 	private int time, minute, second;
 	private String displayTimer, displayMin, displaySec;
 	private String dataPath;
-    private String fileNameHeart = "dataHeart";
-    private String fileNameTime = "dataTime";
+    	private String fileNameHeart = "dataHeart";
+    	private String fileNameTime = "dataTime";
 	
-    public Heart() {
+    	public Heart() {
 		try {
 			dataPath = Heart.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e1) { }
