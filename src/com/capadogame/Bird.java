@@ -51,42 +51,42 @@ public class Bird {
 	
 	public void loadBird() {
 		try {
-    		File f = new File(dataPath, fileNameBird);
-    		if(!f.isFile()) {
-    			createBird();
+			File f = new File(dataPath, fileNameBird);
+			if(!f.isFile()) {
+				createBird();
+    			}
+			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+			setType(Integer.parseInt(reader.readLine()));
+			reader.close();
     		}
-    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
-    		setType(Integer.parseInt(reader.readLine()));
-    		reader.close();
-    	}
-    	catch(Exception e) { }
+    		catch(Exception e) { }
 	}
 	
 	public void createBird() {
 		try {
-    		File file = new File(dataPath, fileNameBird);
-    		
-    		FileWriter output = new FileWriter(file);
-    		BufferedWriter writer = new BufferedWriter(output);
-    		writer.write("0");
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+			File file = new File(dataPath, fileNameBird);
+
+			FileWriter output = new FileWriter(file);
+			BufferedWriter writer = new BufferedWriter(output);
+			writer.write("0");
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void updateBird(int type) {
 		FileWriter output = null;
-    	try {
-    		File f = new File(dataPath, fileNameBird);
-    		output = new FileWriter(f);
-    		BufferedWriter writer = new BufferedWriter(output); 
-    		
-    		writer.write(String.valueOf(type));
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+		try {
+			File f = new File(dataPath, fileNameBird);
+			output = new FileWriter(f);
+			BufferedWriter writer = new BufferedWriter(output); 
+
+			writer.write(String.valueOf(type));
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 }
