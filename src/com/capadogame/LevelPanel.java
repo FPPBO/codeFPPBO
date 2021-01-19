@@ -154,49 +154,49 @@ public class LevelPanel extends JPanel {
 	}
 
 	public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        g.setColor(Color.WHITE);
+		super.paintComponent(g);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, areaWidth, areaHeight/12);
-		
-        drawTrophy(g);
-        drawHeart(g);
-    }
+
+		drawTrophy(g);
+		drawHeart(g);
+	    }
 	
 	public void drawTrophy(Graphics g) {
 		g.setColor(new Color(245, 222, 89));
-        g.setFont(new Font("Monospaced", Font.BOLD, 38));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        
-        g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
-        		(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2, 
-        		0, this);
-        
-        g.drawString(String.valueOf(trophy.getTrophy()),
-        		(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2 + areaHeight/12 + 10, 
-        		(areaHeight/12+28)/2);
+		g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+
+		g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
+				(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2, 
+				0, this);
+
+		g.drawString(String.valueOf(trophy.getTrophy()),
+				(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2 + areaHeight/12 + 10, 
+				(areaHeight/12+28)/2);
 	}
 	
 	public void drawHeart(Graphics g) {
-        g.setFont(new Font("Monospaced", Font.BOLD, 38));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        
-        g.drawImage(resize(biHeart, areaHeight/12, areaHeight/12), 
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2, 
-        		0, this);
-        
-        g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(heart.getHeart()),
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 + 
-        		(areaHeight/12 - metrics.stringWidth(String.valueOf(heart.getHeart())))/2, 
-        		(areaHeight/12+28)/2);
-        
-        g.setColor(new Color(255, 87, 87));
-        g.drawString(heart.getDisplayTimer(),
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 +
-        		areaHeight/12 + 10, (areaHeight/12+28)/2);
+		g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+
+		g.drawImage(resize(biHeart, areaHeight/12, areaHeight/12), 
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2, 
+				0, this);
+
+		g.setColor(Color.WHITE);
+		g.drawString(String.valueOf(heart.getHeart()),
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 + 
+				(areaHeight/12 - metrics.stringWidth(String.valueOf(heart.getHeart())))/2, 
+				(areaHeight/12+28)/2);
+
+		g.setColor(new Color(255, 87, 87));
+		g.drawString(heart.getDisplayTimer(),
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 +
+				areaHeight/12 + 10, (areaHeight/12+28)/2);
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
