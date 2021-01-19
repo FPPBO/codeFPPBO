@@ -31,21 +31,21 @@ public class BGM {
 	}
 	
 	public void play(){
-        clip.setFramePosition(0);  // rewind
-        clip.start();
-        loop();
-    }
-	
-    public void loop(){
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-    
-    public void stop(){
-       clip.stop();
-    }
-    
-    public void close() {
-    	clip.close();
-    }
+		clip.setFramePosition(0);  // rewind
+		clip.start();
+		loop();
+	}
+
+	public void loop(){
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+
+	public void stop(){
+		clip.stop();
+	}
+
+	public void close() {
+		clip.close();
+	}
     
 }
