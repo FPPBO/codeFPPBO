@@ -79,6 +79,8 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		bird.updateBird(bird.getType());
 		shopPanel.updateBirdPurchase();
 		easyPanel.updateClearEasy();
+		mediumPanel.updateClearMedium();
+		hardPanel.updateClearHard();
 		bgm.close();
 	}
 	public void windowClosing(WindowEvent e) {
