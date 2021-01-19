@@ -14,13 +14,14 @@ import javax.swing.Timer;
 
 public class Heart {
 	private int heart;
-	Timer heartTimer;
-	int time, minute, second;
-	String displayTimer, displayMin, displaySec;
+	private Timer heartTimer;
+	private int time, minute, second;
+	private String displayTimer, displayMin, displaySec;
 	private String dataPath;
     private String fileNameHeart = "dataHeart";
     private String fileNameTime = "dataTime";
-	public Heart() {
+	
+    public Heart() {
 		try {
 			dataPath = Heart.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e1) { }
