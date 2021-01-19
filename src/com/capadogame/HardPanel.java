@@ -10,8 +10,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +31,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HardPanel extends JPanel {
-	int areaWidth, areaHeight;
-	Trophy trophy;
-	Heart heart;
-	JLabel jlSelectLevel;
-	ImageIcon iiSetting, iiBack, iiStart, iiProfil, iiShop;
-	List<ImageIcon> iiHard;
-	BufferedImage biTrophy, biHeart;
-	JButton jbSetting, jbBack, jbStart, jbProfil, jbShop;
-	List<JButton> jbHard;
-	JPanel topBar, centerBox, titleBox, selectBox, bottomBar;
-	BoxLayout boxLayoutTB, boxLayoutBB;
-	FlowLayout flowLayoutSB;
-	BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
+	private int areaWidth, areaHeight;
+	private Trophy trophy;
+	private Heart heart;
+	private JLabel jlSelectLevel;
+	private int[] targetHard;
+	private Boolean[] clearHard;
+	private ImageIcon iiSetting, iiBack, iiStart, iiProfil, iiShop;
+	private List<ImageIcon> iiHard;
+	private BufferedImage biTrophy, biHeart;
+	private JButton jbSetting, jbBack, jbStart, jbProfil, jbShop;
+	private List<JButton> jbHard;
+	private JPanel topBar, centerBox, titleBox, selectBox, bottomBar;
+	private BoxLayout boxLayoutTB, boxLayoutBB;
+	private FlowLayout flowLayoutSB;
+	private BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
+	private String dataPath;
+	private String fileNameClearHard = "dataClearHard";
 	
 	public HardPanel (CardLayoutWindow parent, int areaWidth, int areaHeight,
 			Trophy trophy, Heart heart) {
@@ -45,6 +55,9 @@ public class HardPanel extends JPanel {
 		this.areaHeight = areaHeight;
 		this.trophy = trophy;
 		this.heart = heart;
+		try {
+			dataPath = HardPanel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {}
 		
 		/* Top Bar */
 		topBar = new JPanel();
@@ -98,6 +111,12 @@ public class HardPanel extends JPanel {
 		flowLayoutSB = new FlowLayout(FlowLayout.LEFT, 10, 10);
 		selectBox.setLayout(flowLayoutSB);
 		
+		targetHard = new int[3];
+		targetHard[0] = 12;
+		targetHard[1] = 16;
+		targetHard[2] = 22;
+		clearHard = new Boolean[3];
+		loadClearHard();
 		jbHard = new ArrayList<JButton>();
 		iiHard = new ArrayList<ImageIcon>();
 		for (int i=0; i<3; i++) {
@@ -111,9 +130,13 @@ public class HardPanel extends JPanel {
 			jbHard.get(i).setBackground(new Color(250, 220, 90));
 			jbHard.get(i).setActionCommand("Hard" + (i+1));
 			
-			iiHard.add(new ImageIcon(new ImageIcon("res/fhard-" + (i+1) + ".png").getImage().
-					getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
-			jbHard.get(i).setIcon(iiHard.get(i));
+			if (clearHard[i] == true) {
+				setClearButton(i);
+			} else {
+				iiHard.add(new ImageIcon(new ImageIcon("res/fhard-" + (i+1) + ".png").getImage().
+						getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+				jbHard.get(i).setIcon(iiHard.get(i));
+			}
 		}
 				
 		for (JButton jbHard: jbHard) {
@@ -180,7 +203,71 @@ public class HardPanel extends JPanel {
 		jbProfil.addActionListener(parent);
 		jbShop.addActionListener(parent);
 	}
-
+	
+	public int getTargetHard(int index) {
+		return targetHard[index];
+	}
+	
+	public Boolean getClearHard(int index) {
+		return clearHard[index];
+	}
+	
+	public void setClearHard(int index, Boolean clear) {
+		clearHard[index] = clear;
+	}
+	
+	public void setClearButton(int index) {
+		iiHard.add(index, new ImageIcon(new ImageIcon("res/chard-" + (index+1) + ".png").getImage().
+				getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+		jbHard.get(index).setIcon(iiHard.get(index));
+	}
+	
+	public void loadClearHard() {
+		try {
+    		File f = new File(dataPath, fileNameClearHard);
+    		if(!f.isFile()) {
+    			createClearHard();
+    		}
+    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+    		for (int i=0; i<clearHard.length; i++) {
+    			clearHard[i] = Boolean.parseBoolean(reader.readLine());
+    		}
+    		reader.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
+	public void createClearHard() {
+		try {
+    		File file = new File(dataPath, fileNameClearHard);
+    		
+    		FileWriter output = new FileWriter(file);
+    		BufferedWriter writer = new BufferedWriter(output);
+    		for (int i=0; i<clearHard.length; i++) {
+    			writer.write(String.format("false\n"));
+    		}
+    		
+    		writer.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
+	public void updateClearHard() {
+		FileWriter output = null;
+    	try {
+    		File f = new File(dataPath, fileNameClearHard);
+    		output = new FileWriter(f);
+    		BufferedWriter writer = new BufferedWriter(output); 
+    		
+    		for (int i=0; i<clearHard.length; i++) {
+    			writer.write(String.format("%s\n", clearHard[i]));
+    		}
+    		
+    		writer.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
 	public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.WHITE);
