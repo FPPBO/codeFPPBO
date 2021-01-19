@@ -113,7 +113,7 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 					mediumPanel.repaint();
 					hardPanel.repaint();
 					try {
-						Thread.sleep(1000/2);
+						Thread.sleep(1000/5);
 					} catch (InterruptedException ex) {}
 				}
 			}
