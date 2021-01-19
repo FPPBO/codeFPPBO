@@ -10,8 +10,9 @@ import java.net.URISyntaxException;
 
 public class Trophy {
 	private int trophy;
-	String dataPath;
-	String fileNameTrophy = "dataTrophy";
+	private String dataPath;
+	private String fileNameTrophy = "dataTrophy";
+	
 	public Trophy() {
 		try {
 			dataPath = Trophy.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
