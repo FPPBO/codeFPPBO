@@ -224,94 +224,94 @@ public class MediumPanel extends JPanel {
 	
 	public void loadClearMedium() {
 		try {
-    		File f = new File(dataPath, fileNameClearMedium);
-    		if(!f.isFile()) {
-    			createClearMedium();
-    		}
-    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
-    		for (int i=0; i<clearMedium.length; i++) {
-    			clearMedium[i] = Boolean.parseBoolean(reader.readLine());
-    		}
-    		reader.close();
-    	}
-    	catch(Exception e) { }
+			File f = new File(dataPath, fileNameClearMedium);
+			if(!f.isFile()) {
+				createClearMedium();
+			}
+			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+			for (int i=0; i<clearMedium.length; i++) {
+				clearMedium[i] = Boolean.parseBoolean(reader.readLine());
+			}
+			reader.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void createClearMedium() {
 		try {
-    		File file = new File(dataPath, fileNameClearMedium);
-    		
-    		FileWriter output = new FileWriter(file);
-    		BufferedWriter writer = new BufferedWriter(output);
-    		for (int i=0; i<clearMedium.length; i++) {
-    			writer.write(String.format("false\n"));
-    		}
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+			File file = new File(dataPath, fileNameClearMedium);
+
+			FileWriter output = new FileWriter(file);
+			BufferedWriter writer = new BufferedWriter(output);
+			for (int i=0; i<clearMedium.length; i++) {
+				writer.write(String.format("false\n"));
+			}
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void updateClearMedium() {
 		FileWriter output = null;
-    	try {
-    		File f = new File(dataPath, fileNameClearMedium);
-    		output = new FileWriter(f);
-    		BufferedWriter writer = new BufferedWriter(output); 
-    		
-    		for (int i=0; i<clearMedium.length; i++) {
-    			writer.write(String.format("%s\n", clearMedium[i]));
-    		}
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+		try {
+			File f = new File(dataPath, fileNameClearMedium);
+			output = new FileWriter(f);
+			BufferedWriter writer = new BufferedWriter(output); 
+
+			for (int i=0; i<clearMedium.length; i++) {
+				writer.write(String.format("%s\n", clearMedium[i]));
+			}
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        g.setColor(Color.WHITE);
+		super.paintComponent(g);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, areaWidth, areaHeight/12);
 		
-        drawTrophy(g);
-        drawHeart(g);
-    }
+		drawTrophy(g);
+		drawHeart(g);
+	    }
 	
 	public void drawTrophy(Graphics g) {
 		g.setColor(new Color(245, 222, 89));
-        g.setFont(new Font("Monospaced", Font.BOLD, 38));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        
-        g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
-        		(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2, 
-        		0, this);
-        
-        g.drawString(String.valueOf(trophy.getTrophy()),
-        		(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2 + areaHeight/12 + 10, 
-        		(areaHeight/12+28)/2);
+		g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+
+		g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
+				(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2, 
+				0, this);
+
+		g.drawString(String.valueOf(trophy.getTrophy()),
+				(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2 + areaHeight/12 + 10, 
+				(areaHeight/12+28)/2);
 	}
 	
 	public void drawHeart(Graphics g) {
-        g.setFont(new Font("Monospaced", Font.BOLD, 38));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        
-        g.drawImage(resize(biHeart, areaHeight/12, areaHeight/12), 
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2, 
-        		0, this);
-        
-        g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(heart.getHeart()),
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 + 
-        		(areaHeight/12 - metrics.stringWidth(String.valueOf(heart.getHeart())))/2, 
-        		(areaHeight/12+28)/2);
-        
-        g.setColor(new Color(255, 87, 87));
-        g.drawString(heart.getDisplayTimer(),
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 +
-        		areaHeight/12 + 10, (areaHeight/12+28)/2);
+		g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+
+		g.drawImage(resize(biHeart, areaHeight/12, areaHeight/12), 
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2, 
+				0, this);
+
+		g.setColor(Color.WHITE);
+		g.drawString(String.valueOf(heart.getHeart()),
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 + 
+				(areaHeight/12 - metrics.stringWidth(String.valueOf(heart.getHeart())))/2, 
+				(areaHeight/12+28)/2);
+
+		g.setColor(new Color(255, 87, 87));
+		g.drawString(heart.getDisplayTimer(),
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 +
+				areaHeight/12 + 10, (areaHeight/12+28)/2);
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
