@@ -102,69 +102,69 @@ public class Heart {
 	
 	public void loadTime() {
 		try {
-    		File f = new File(dataPath, fileNameTime);
-    		if(!f.isFile()) {
-    			createTime();
-    		}
-    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
-    		time = Integer.parseInt(reader.readLine());
-    		reader.close();
-    	}
-    	catch(Exception e) { }
+			File f = new File(dataPath, fileNameTime);
+			if(!f.isFile()) {
+				createTime();
+			}
+			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+			time = Integer.parseInt(reader.readLine());
+			reader.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void createHeart() {
 		try {
-    		File file = new File(dataPath, fileNameHeart);
-    		
-    		FileWriter output = new FileWriter(file);
-    		BufferedWriter writer = new BufferedWriter(output);
-    		writer.write("5");
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+			File file = new File(dataPath, fileNameHeart);
+
+			FileWriter output = new FileWriter(file);
+			BufferedWriter writer = new BufferedWriter(output);
+			writer.write("5");
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void createTime() {
 		try {
-    		File file = new File(dataPath, fileNameTime);
-    		
-    		FileWriter output = new FileWriter(file);
-    		BufferedWriter writer = new BufferedWriter(output);
-    		writer.write("900");
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+			File file = new File(dataPath, fileNameTime);
+
+			FileWriter output = new FileWriter(file);
+			BufferedWriter writer = new BufferedWriter(output);
+			writer.write("900");
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void updateHeart(int Heart) {
 		FileWriter output = null;
-    	try {
-    		File f = new File(dataPath, fileNameHeart);
-    		output = new FileWriter(f);
-    		BufferedWriter writer = new BufferedWriter(output); 
-    		
-    		writer.write(String.valueOf(heart));
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+		try {
+			File f = new File(dataPath, fileNameHeart);
+			output = new FileWriter(f);
+			BufferedWriter writer = new BufferedWriter(output); 
+
+			writer.write(String.valueOf(heart));
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void updateTime() {
 		FileWriter output = null;
-    	try {
-    		File f = new File(dataPath, fileNameTime);
-    		output = new FileWriter(f);
-    		BufferedWriter writer = new BufferedWriter(output); 
-    		
-    		writer.write(String.valueOf(this.time));
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+		try {
+			File f = new File(dataPath, fileNameTime);
+			output = new FileWriter(f);
+			BufferedWriter writer = new BufferedWriter(output); 
+
+			writer.write(String.valueOf(this.time));
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 }
