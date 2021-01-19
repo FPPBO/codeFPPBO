@@ -14,21 +14,22 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class BirdShop extends JPanel {
-	int type;
-	String title, description;
-	ImageIcon iiPrev, iiImage, iiNext;
-	JButton jbPrev, jbSelect, jbPurchase, jbNext;
-	JLabel jlImage, jlTitle;
-	JTextArea jtaDescription;
-	JPanel centerShop;
-	GridBagLayout gridBagLayoutCS;
-	GridBagConstraints c;
-	BoxLayout boxLayoutP;
-	JPanel prevBird, nextBird;
+	private int type;
+	private String title, description;
+	private ImageIcon iiPrev, iiImage, iiNext;
+	private JButton jbPrev, jbSelect, jbPurchase, jbNext;
+	private JLabel jlImage, jlTitle;
+	private JTextArea jtaDescription;
+	private JPanel centerShop;
+	private GridBagLayout gridBagLayoutCS;
+	private GridBagConstraints c;
+	private BoxLayout boxLayoutP;
+	private JPanel prevBird, nextBird;
 	
 	public BirdShop (ShopPanel parent, int areaWidth, int areaHeight, 
 			Bird bird, Boolean[] birdPurchase, int type) {
@@ -126,8 +127,13 @@ public class BirdShop extends JPanel {
 		setButton(bird, birdPurchase);
 		jbPurchase.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	birdPurchase[type] = true;
-    			setButton(bird, birdPurchase);
+            	int choose = JOptionPane.showConfirmDialog(parent, 
+						"Are you sure you want to buy \"" + title + "\"?", 
+						"Confirm Buy", JOptionPane.YES_NO_OPTION);
+				if (choose == JOptionPane.YES_OPTION) {
+					birdPurchase[type] = true;
+	    			setButton(bird, birdPurchase);
+				} 
             }
         });
 		
@@ -170,24 +176,19 @@ public class BirdShop extends JPanel {
 	public void setString() {
 		if (type == 0) {
 			title = "Dove";
-			description = "blasabukdb audbila abjbda abjsa bsajb "
-					+ "ayusgau saisb asguahis a gayk abga da6s agsyajb";
+			description = "(change bird color to red)";
 		} else if (type == 1) {
 			title = "Fluffy";
-			description = "blasabukdb audbila abjbda abjsa bsajb "
-					+ "ayusgau sask saisb asguahis a gayk abga da6s agsyajb";
+			description = "(change bird color to magenta)";
 		} else if (type == 2) {
 			title = "Lovely";
-			description = "blasabukdb audbila abjbda abjsa bsajb "
-					+ "ayusgau sask asguahis a gayk abga da6s agsyajb";
+			description = "(change bird color to yellow)";
 		} else if (type == 3) {
 			title = "Seagull";
-			description = "blasabukdb audbila abjbda abjsa bsajb "
-					+ "ayusgau sask asguahis a gayk abga da6s agsyajb";
+			description = "(change bird color to pink)";
 		} else if (type == 4) {
 			title = "Crystal";
-			description = "blasabukdb audbila abjbda abjsa bsajb "
-					+ "ayusgau sask asguahis a gayk abga da6s agsyajb";
+			description = "(change bird color to blue)";
 		}
 	}
 	
