@@ -10,8 +10,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +31,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MediumPanel extends JPanel {
-	int areaWidth, areaHeight;
-	Trophy trophy;
-	Heart heart;
-	JLabel jlSelectLevel;
-	ImageIcon iiSetting, iiBack, iiStart, iiPprofil, iiShop;
-	List<ImageIcon> iiMedium;
-	BufferedImage biTrophy, biHeart;
-	JButton jbSetting, jbBack, jbStart, jbPprofil, jbShop;
-	List<JButton> jbMedium;
-	JPanel topBar, centerBox, titleBox, selectBox, bottomBar;
-	BoxLayout boxLayoutTB, boxLayoutBB;
-	FlowLayout flowLayoutSB;
-	BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
+	private int areaWidth, areaHeight;
+	private Trophy trophy;
+	private Heart heart;
+	private JLabel jlSelectLevel;
+	private int[] targetMedium;
+	private Boolean[] clearMedium;
+	private ImageIcon iiSetting, iiBack, iiStart, iiPprofil, iiShop;
+	private List<ImageIcon> iiMedium;
+	private BufferedImage biTrophy, biHeart;
+	private JButton jbSetting, jbBack, jbStart, jbPprofil, jbShop;
+	private List<JButton> jbMedium;
+	private JPanel topBar, centerBox, titleBox, selectBox, bottomBar;
+	private BoxLayout boxLayoutTB, boxLayoutBB;
+	private FlowLayout flowLayoutSB;
+	private BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
+	private String dataPath;
+	private String fileNameClearMedium = "dataClearMedium";
 	
 	public MediumPanel (CardLayoutWindow parent, int areaWidth, int areaHeight,
 			Trophy trophy, Heart heart) {
@@ -45,6 +55,9 @@ public class MediumPanel extends JPanel {
 		this.areaHeight = areaHeight;
 		this.trophy = trophy;
 		this.heart = heart;
+		try {
+			dataPath = MediumPanel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {}
 		
 		/* Top Bar */
 		topBar = new JPanel();
@@ -98,6 +111,12 @@ public class MediumPanel extends JPanel {
 		flowLayoutSB = new FlowLayout(FlowLayout.LEFT, 10, 10);
 		selectBox.setLayout(flowLayoutSB);
 		
+		targetMedium = new int[3];
+		targetMedium[0] = 5;
+		targetMedium[1] = 10;
+		targetMedium[2] = 15;
+		clearMedium = new Boolean[3];
+		loadClearMedium();
 		jbMedium = new ArrayList<JButton>();
 		iiMedium = new ArrayList<ImageIcon>();
 		for (int i=0; i<3; i++) {
@@ -111,9 +130,13 @@ public class MediumPanel extends JPanel {
 			jbMedium.get(i).setBackground(new Color(250, 220, 90));
 			jbMedium.get(i).setActionCommand("Medium" + (i+1));
 			
-			iiMedium.add(new ImageIcon(new ImageIcon("res/fmedium-" + (i+1) + ".png").getImage().
-					getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
-			jbMedium.get(i).setIcon(iiMedium.get(i));
+			if (clearMedium[i] == true) {
+				setClearButton(i);
+			} else {
+				iiMedium.add(new ImageIcon(new ImageIcon("res/fmedium-" + (i+1) + ".png").getImage().
+						getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+				jbMedium.get(i).setIcon(iiMedium.get(i));
+			}
 		}
 				
 		for (JButton jbMedium: jbMedium) {
@@ -180,7 +203,71 @@ public class MediumPanel extends JPanel {
 		jbPprofil.addActionListener(parent);
 		jbShop.addActionListener(parent);
 	}
-
+	
+	public int getTargetMedium(int index) {
+		return targetMedium[index];
+	}
+	
+	public Boolean getClearMedium(int index) {
+		return clearMedium[index];
+	}
+	
+	public void setClearMedium(int index, Boolean clear) {
+		clearMedium[index] = clear;
+	}
+	
+	public void setClearButton(int index) {
+		iiMedium.add(index, new ImageIcon(new ImageIcon("res/cmedium-" + (index+1) + ".png").getImage().
+				getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+		jbMedium.get(index).setIcon(iiMedium.get(index));
+	}
+	
+	public void loadClearMedium() {
+		try {
+    		File f = new File(dataPath, fileNameClearMedium);
+    		if(!f.isFile()) {
+    			createClearMedium();
+    		}
+    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+    		for (int i=0; i<clearMedium.length; i++) {
+    			clearMedium[i] = Boolean.parseBoolean(reader.readLine());
+    		}
+    		reader.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
+	public void createClearMedium() {
+		try {
+    		File file = new File(dataPath, fileNameClearMedium);
+    		
+    		FileWriter output = new FileWriter(file);
+    		BufferedWriter writer = new BufferedWriter(output);
+    		for (int i=0; i<clearMedium.length; i++) {
+    			writer.write(String.format("false\n"));
+    		}
+    		
+    		writer.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
+	public void updateClearMedium() {
+		FileWriter output = null;
+    	try {
+    		File f = new File(dataPath, fileNameClearMedium);
+    		output = new FileWriter(f);
+    		BufferedWriter writer = new BufferedWriter(output); 
+    		
+    		for (int i=0; i<clearMedium.length; i++) {
+    			writer.write(String.format("%s\n", clearMedium[i]));
+    		}
+    		
+    		writer.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
 	public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.WHITE);
