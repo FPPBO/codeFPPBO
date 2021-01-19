@@ -270,7 +270,7 @@ public class EasyPanel extends JPanel {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.setColor(Color.WHITE);
-			g.fillRect(0, 0, areaWidth, areaHeight/12);
+		g.fillRect(0, 0, areaWidth, areaHeight/12);
 
 		drawTrophy(g);
 		drawHeart(g);
