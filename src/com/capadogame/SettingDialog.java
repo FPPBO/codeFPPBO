@@ -13,11 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class SettingDialog extends JDialog {
-	JPanel jpSetting;
-	JLabel jlMusic;
-	JButton jbMusic;
-	BGM bgm;
-	FlowLayout flowLayoutS;
+	private JPanel jpSetting;
+	private JLabel jlMusic;
+	private JButton jbMusic;
+	private BGM bgm;
+	private FlowLayout flowLayoutS;
 	private final Color red = new Color(255, 87, 87);
 	private final Color green = new Color(126, 217, 87);
 	
