@@ -10,8 +10,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +31,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class EasyPanel extends JPanel {
-	int areaWidth, areaHeight;
-	Trophy trophy;
-	Heart heart;
-	JLabel jlSelectLevel;
-	ImageIcon iiSetting, iiBack, iiStart, iiProfil, iiShop;
-	List<ImageIcon> iiEasy;
-	BufferedImage biTrophy, biHeart;
-	JButton jbSetting, jbBack, jbStart, jbProfil, jbShop;
-	List<JButton> jbEasy;
-	JPanel topBar, centerBox, titleBox, selectBox, bottomBar;
-	BoxLayout boxLayoutTB, boxLayoutBB;
-	FlowLayout flowLayoutSB;
-	BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
+	private int areaWidth, areaHeight;
+	private Trophy trophy;
+	private Heart heart;
+	private JLabel jlSelectLevel;
+	private int[] targetEasy;
+	private Boolean[] clearEasy;
+	private ImageIcon iiSetting, iiBack, iiStart, iiProfil, iiShop;
+	private List<ImageIcon> iiEasy;
+	private BufferedImage biTrophy, biHeart;
+	private JButton jbSetting, jbBack, jbStart, jbProfil, jbShop;
+	private List<JButton> jbEasy;
+	private JPanel topBar, centerBox, titleBox, selectBox, bottomBar;
+	private BoxLayout boxLayoutTB, boxLayoutBB;
+	private FlowLayout flowLayoutSB;
+	private BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
+	private String dataPath;
+	private String fileNameClearEasy = "dataClearEasy";
 	
 	public EasyPanel (CardLayoutWindow parent, int areaWidth, int areaHeight,
 			Trophy trophy, Heart heart) {
@@ -45,6 +55,9 @@ public class EasyPanel extends JPanel {
 		this.areaHeight = areaHeight;
 		this.trophy = trophy;
 		this.heart = heart;
+		try {
+			dataPath = EasyPanel.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {}
 		
 		/* Top Bar */
 		topBar = new JPanel();
@@ -98,6 +111,12 @@ public class EasyPanel extends JPanel {
 		flowLayoutSB = new FlowLayout(FlowLayout.LEFT, 10, 10);
 		selectBox.setLayout(flowLayoutSB);
 		
+		targetEasy = new int[3];
+		targetEasy[0] = 3;
+		targetEasy[1] = 5;
+		targetEasy[2] = 7;
+		clearEasy = new Boolean[3];
+		loadClearEasy();
 		jbEasy = new ArrayList<JButton>();
 		iiEasy = new ArrayList<ImageIcon>();
 		for (int i=0; i<3; i++) {
@@ -111,9 +130,13 @@ public class EasyPanel extends JPanel {
 			jbEasy.get(i).setBackground(new Color(250, 220, 90));
 			jbEasy.get(i).setActionCommand("Easy" + (i+1));
 			
-			iiEasy.add(new ImageIcon(new ImageIcon("res/feasy-" + (i+1) + ".png").getImage().
-					getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
-			jbEasy.get(i).setIcon(iiEasy.get(i));
+			if (clearEasy[i] == true) {
+				setClearButton(i);
+			} else {
+				iiEasy.add(new ImageIcon(new ImageIcon("res/feasy-" + (i+1) + ".png").getImage().
+						getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+				jbEasy.get(i).setIcon(iiEasy.get(i));
+			}
 		}
 				
 		for (JButton jbEasy: jbEasy) {
@@ -179,7 +202,71 @@ public class EasyPanel extends JPanel {
 		jbProfil.addActionListener(parent);
 		jbShop.addActionListener(parent);
 	}
-
+	
+	public int getTargetEasy(int index) {
+		return targetEasy[index];
+	}
+	
+	public Boolean getClearEasy(int index) {
+		return clearEasy[index];
+	}
+	
+	public void setClearEasy(int index, Boolean clear) {
+		clearEasy[index] = clear;
+	}
+	
+	public void setClearButton(int index) {
+		iiEasy.add(index, new ImageIcon(new ImageIcon("res/ceasy-" + (index+1) + ".png").getImage().
+				getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+		jbEasy.get(index).setIcon(iiEasy.get(index));
+	}
+	
+	public void loadClearEasy() {
+		try {
+    		File f = new File(dataPath, fileNameClearEasy);
+    		if(!f.isFile()) {
+    			createClearEasy();
+    		}
+    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+    		for (int i=0; i<clearEasy.length; i++) {
+    			clearEasy[i] = Boolean.parseBoolean(reader.readLine());
+    		}
+    		reader.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
+	public void createClearEasy() {
+		try {
+    		File file = new File(dataPath, fileNameClearEasy);
+    		
+    		FileWriter output = new FileWriter(file);
+    		BufferedWriter writer = new BufferedWriter(output);
+    		for (int i=0; i<clearEasy.length; i++) {
+    			writer.write(String.format("false\n"));
+    		}
+    		
+    		writer.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
+	public void updateClearEasy() {
+		FileWriter output = null;
+    	try {
+    		File f = new File(dataPath, fileNameClearEasy);
+    		output = new FileWriter(f);
+    		BufferedWriter writer = new BufferedWriter(output); 
+    		
+    		for (int i=0; i<clearEasy.length; i++) {
+    			writer.write(String.format("%s\n", clearEasy[i]));
+    		}
+    		
+    		writer.close();
+    	}
+    	catch(Exception e) { }
+	}
+	
 	public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.WHITE);
