@@ -187,49 +187,49 @@ public class ShopPanel extends JPanel implements ActionListener {
 	
 	public void loadBirdPurchase() {
 		try {
-    		File f = new File(dataPath, fileNameBirdPurchase);
-    		if(!f.isFile()) {
-    			createBirdPurchase();
-    		}
-    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
-    		for (int i=0; i<birdPurchase.length; i++) {
-    			birdPurchase[i] = Boolean.parseBoolean(reader.readLine());
-    		}
-    		reader.close();
-    	}
-    	catch(Exception e) { }
+			File f = new File(dataPath, fileNameBirdPurchase);
+			if(!f.isFile()) {
+				createBirdPurchase();
+			}
+			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+			for (int i=0; i<birdPurchase.length; i++) {
+				birdPurchase[i] = Boolean.parseBoolean(reader.readLine());
+			}
+			reader.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void createBirdPurchase() {
 		try {
-    		File file = new File(dataPath, fileNameBirdPurchase);
-    		
-    		FileWriter output = new FileWriter(file);
-    		BufferedWriter writer = new BufferedWriter(output);
-    		writer.write(String.format("true\n"));
-    		for (int i=1; i<birdPurchase.length; i++) {
-    			writer.write(String.format("false\n"));
-    		}
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+			File file = new File(dataPath, fileNameBirdPurchase);
+
+			FileWriter output = new FileWriter(file);
+			BufferedWriter writer = new BufferedWriter(output);
+			writer.write(String.format("true\n"));
+			for (int i=1; i<birdPurchase.length; i++) {
+				writer.write(String.format("false\n"));
+			}
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void updateBirdPurchase() {
 		FileWriter output = null;
-    	try {
-    		File f = new File(dataPath, fileNameBirdPurchase);
-    		output = new FileWriter(f);
-    		BufferedWriter writer = new BufferedWriter(output); 
-    		
-    		for (int i=0; i<birdPurchase.length; i++) {
-    			writer.write(String.format("%s\n", birdPurchase[i]));
-    		}
-    		
-    		writer.close();
-    	}
-    	catch(Exception e) { }
+		try {
+			File f = new File(dataPath, fileNameBirdPurchase);
+			output = new FileWriter(f);
+			BufferedWriter writer = new BufferedWriter(output); 
+
+			for (int i=0; i<birdPurchase.length; i++) {
+				writer.write(String.format("%s\n", birdPurchase[i]));
+			}
+
+			writer.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	@Override
@@ -238,74 +238,74 @@ public class ShopPanel extends JPanel implements ActionListener {
 		if (command.equalsIgnoreCase("BirdPrev1")) { // ke 0 dari 1
 			((BirdShop) ((BirdShop) birdShop1).getPrevBird()).setButton(bird, birdPurchase);
 			cardManagerBird.show(birdShop, "birdShop0");
-        } else if (command.equalsIgnoreCase("BirdNext0")) { // ke 1 dari 0
-        	((BirdShop) ((BirdShop) birdShop0).getNextBird()).setButton(bird, birdPurchase);
-        	cardManagerBird.show(birdShop, "birdShop1");
-        } else if (command.equalsIgnoreCase("BirdPrev2")) { // ke 1 dari 2
-        	((BirdShop) ((BirdShop) birdShop2).getPrevBird()).setButton(bird, birdPurchase);
-        	cardManagerBird.show(birdShop, "birdShop1");
-        } else if (command.equalsIgnoreCase("BirdNext1")) { // ke 2 dari 1
-            ((BirdShop) ((BirdShop) birdShop1).getNextBird()).setButton(bird, birdPurchase);
-            cardManagerBird.show(birdShop, "birdShop2");
-        } else if (command.equalsIgnoreCase("BirdPrev3")) { // ke 2 dari 3
-            ((BirdShop) ((BirdShop) birdShop3).getPrevBird()).setButton(bird, birdPurchase);
-            cardManagerBird.show(birdShop, "birdShop2");
-        } else if (command.equalsIgnoreCase("BirdNext2")) { // ke 3 dari 2
-            ((BirdShop) ((BirdShop) birdShop2).getNextBird()).setButton(bird, birdPurchase);
-            cardManagerBird.show(birdShop, "birdShop3");
-        } else if (command.equalsIgnoreCase("BirdPrev4")) { // ke 3 dari 4
-            ((BirdShop) ((BirdShop) birdShop4).getPrevBird()).setButton(bird, birdPurchase);
-            cardManagerBird.show(birdShop, "birdShop3");
-        } else if (command.equalsIgnoreCase("BirdNext3")) { // ke 4 dari 3
-            ((BirdShop) ((BirdShop) birdShop3).getNextBird()).setButton(bird, birdPurchase);
-            cardManagerBird.show(birdShop, "birdShop4");
-        } 
+		} else if (command.equalsIgnoreCase("BirdNext0")) { // ke 1 dari 0
+			((BirdShop) ((BirdShop) birdShop0).getNextBird()).setButton(bird, birdPurchase);
+			cardManagerBird.show(birdShop, "birdShop1");
+		} else if (command.equalsIgnoreCase("BirdPrev2")) { // ke 1 dari 2
+			((BirdShop) ((BirdShop) birdShop2).getPrevBird()).setButton(bird, birdPurchase);
+			cardManagerBird.show(birdShop, "birdShop1");
+		} else if (command.equalsIgnoreCase("BirdNext1")) { // ke 2 dari 1
+		    ((BirdShop) ((BirdShop) birdShop1).getNextBird()).setButton(bird, birdPurchase);
+		    cardManagerBird.show(birdShop, "birdShop2");
+		} else if (command.equalsIgnoreCase("BirdPrev3")) { // ke 2 dari 3
+		    ((BirdShop) ((BirdShop) birdShop3).getPrevBird()).setButton(bird, birdPurchase);
+		    cardManagerBird.show(birdShop, "birdShop2");
+		} else if (command.equalsIgnoreCase("BirdNext2")) { // ke 3 dari 2
+		    ((BirdShop) ((BirdShop) birdShop2).getNextBird()).setButton(bird, birdPurchase);
+		    cardManagerBird.show(birdShop, "birdShop3");
+		} else if (command.equalsIgnoreCase("BirdPrev4")) { // ke 3 dari 4
+		    ((BirdShop) ((BirdShop) birdShop4).getPrevBird()).setButton(bird, birdPurchase);
+		    cardManagerBird.show(birdShop, "birdShop3");
+		} else if (command.equalsIgnoreCase("BirdNext3")) { // ke 4 dari 3
+		    ((BirdShop) ((BirdShop) birdShop3).getNextBird()).setButton(bird, birdPurchase);
+		    cardManagerBird.show(birdShop, "birdShop4");
+		} 
 	}
 	
 	public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        g.setColor(Color.WHITE);
+		super.paintComponent(g);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, areaWidth, areaHeight/12);
 		
-        drawTrophy(g);
-        drawHeart(g);
-    }
+		drawTrophy(g);
+		drawHeart(g);
+	    }
 	
 	public void drawTrophy(Graphics g) {
 		g.setColor(new Color(245, 222, 89));
-        g.setFont(new Font("Monospaced", Font.BOLD, 38));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        
-        g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
-        		(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2, 
-        		0, this);
-        
-        g.drawString(String.valueOf(trophy.getTrophy()),
-        		(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2 + areaHeight/12 + 10, 
-        		(areaHeight/12+28)/2);
+        	g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+
+		g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
+				(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2, 
+				0, this);
+
+		g.drawString(String.valueOf(trophy.getTrophy()),
+				(areaWidth - areaHeight/12 - 10 - metrics.stringWidth(String.valueOf(trophy.getTrophy())))/2 + areaHeight/12 + 10, 
+				(areaHeight/12+28)/2);
 	}
 	
 	public void drawHeart(Graphics g) {
-        g.setFont(new Font("Monospaced", Font.BOLD, 38));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        
-        g.drawImage(resize(biHeart, areaHeight/12, areaHeight/12), 
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2, 
-        		0, this);
-        
-        g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(heart.getHeart()),
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 + 
-        		(areaHeight/12 - metrics.stringWidth(String.valueOf(heart.getHeart())))/2, 
-        		(areaHeight/12+28)/2);
-        
-        g.setColor(new Color(255, 87, 87));
-        g.drawString(heart.getDisplayTimer(),
-        		3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
-        		((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 +
-        		areaHeight/12 + 10, (areaHeight/12+28)/2);
+		g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+
+		g.drawImage(resize(biHeart, areaHeight/12, areaHeight/12), 
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2, 
+				0, this);
+
+		g.setColor(Color.WHITE);
+		g.drawString(String.valueOf(heart.getHeart()),
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 + 
+				(areaHeight/12 - metrics.stringWidth(String.valueOf(heart.getHeart())))/2, 
+				(areaHeight/12+28)/2);
+
+		g.setColor(new Color(255, 87, 87));
+		g.drawString(heart.getDisplayTimer(),
+				3*((areaWidth-3*(areaHeight/9))/4 + areaHeight/9) + 
+				((areaWidth-3*(areaHeight/9))/4 - areaHeight/12 - 10 - metrics.stringWidth(heart.getDisplayTimer()))/2 +
+				areaHeight/12 + 10, (areaHeight/12+28)/2);
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
