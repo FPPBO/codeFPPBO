@@ -24,9 +24,9 @@ public class SettingDialog extends JDialog {
 	public SettingDialog(CardLayoutWindow parent, BGM bgm) {
 		super(parent, "Setting", true);
 		setSize(300, 150);
-        setLocationRelativeTo(parent);
-		
-        this.bgm = bgm;
+		setLocationRelativeTo(parent);
+
+		this.bgm = bgm;
 		
 		jpSetting = new JPanel();
 		flowLayoutS = new FlowLayout(FlowLayout.CENTER, 50, 38);
@@ -40,10 +40,10 @@ public class SettingDialog extends JDialog {
 		jbMusic.setBackground(green);
 		jbMusic.setFocusPainted(false);
 		jbMusic.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	setButton();
-            }
-        });
+			public void actionPerformed(ActionEvent e) {
+				setButton();
+			}
+		});
 		jbMusic.setMinimumSize(new Dimension(66, 29));
 		jbMusic.setPreferredSize(new Dimension(66, 29));
 		
