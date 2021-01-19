@@ -20,15 +20,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class ProfilPanel extends JPanel {
-	int areaWidth, areaHeight;
-	Trophy trophy;
-	Heart heart;
-	ImageIcon iiSetting, iiStart, iiProfil, iiShop;
-	BufferedImage biTrophy, biHeart;
-	JButton jbSetting, jbStart, jbProfil,jbShop;
-	JPanel topBar, centerBox, bottomBar;
-	BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
-	BorderLayout borderLayoutP;
+	private int areaWidth, areaHeight;
+	private Trophy trophy;
+	private Heart heart;
+	private ImageIcon iiSetting, iiStart, iiProfil, iiShop;
+	private BufferedImage biTrophy, biHeart;
+	private JButton jbSetting, jbStart, jbProfil,jbShop;
+	private JPanel topBar, centerBox, bottomBar;
+	private BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
+	private BorderLayout borderLayoutP;
 	
 	public ProfilPanel (CardLayoutWindow parent, int areaWidth, int areaHeight, 
 			Trophy trophy, Heart heart) {
