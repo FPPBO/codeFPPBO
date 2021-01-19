@@ -1,6 +1,7 @@
 package com.capadogame;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -9,20 +10,23 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class CardLayoutWindow extends Frame implements WindowListener, ActionListener{
-	CardLayout cardManager;
-	SettingDialog settingDialog;
-	StartPanel startPanel;
-	ProfilPanel profilPanel;
-	ShopPanel shopPanel;
-	LevelPanel levelPanel;
-	EasyPanel easyPanel;
-	MediumPanel mediumPanel;
-	HardPanel hardPanel;
-	BGM bgm;
-	Bird bird;
-	Trophy trophy;
-	Heart heart;
-	int areaWidth, areaHeight;
+	private CardLayout cardManager;
+	private SettingDialog settingDialog;
+	private StartPanel startPanel;
+	private ProfilPanel profilPanel;
+	private ShopPanel shopPanel;
+	private LevelPanel levelPanel;
+	private EasyPanel easyPanel;
+	private FlappyBirdEasy flappyBirdEasy;
+	private MediumPanel mediumPanel;
+	private FlappyBirdMedium flappyBirdMedium;
+	private HardPanel hardPanel;
+	private FlappyBirdHard flappyBirdHard;
+	private BGM bgm;
+	private Bird bird;
+	private Trophy trophy;
+	private Heart heart;
+	private int areaWidth, areaHeight;
 	
 	public CardLayoutWindow (String frameTitle) {
 		super(frameTitle);
@@ -74,6 +78,7 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		trophy.updateTrophy(trophy.getTrophy());
 		bird.updateBird(bird.getType());
 		shopPanel.updateBirdPurchase();
+		easyPanel.updateClearEasy();
 		bgm.close();
 	}
 	public void windowClosing(WindowEvent e) {
@@ -93,13 +98,6 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		cardManager.show(this, "startPanel");
 		bgm.play();
 	}
-	
-//	klo menang
-//	trophy.setTrophy(trophy.getTrophy()+1);
-// 	ganti gambar level => repaint tambah tulisan clear aja ya :((
-	
-//	klo kalah
-//	heart kurang
 	
 	public void startThread() {
 		Thread windowThread = new Thread() {
@@ -136,28 +134,88 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
       	 	cardManager.show(this, "levelPanel");
         } else if (command.equalsIgnoreCase("Easy")) {
       	 	cardManager.show(this, "easyPanel");
+        } else if (command.equalsIgnoreCase("ReturnEasy")) {
+        	if (flappyBirdEasy.getTarget() == flappyBirdEasy.getScore()) {
+        		for (int i=0; i<3; i++) {
+        			if (flappyBirdEasy.getTarget() == easyPanel.getTargetEasy(i) && easyPanel.getClearEasy(i) == false) {
+            			easyPanel.setClearEasy(i, true);
+            			easyPanel.setClearButton(i);
+            			trophy.setTrophy(trophy.getTrophy()+1);
+            			break;
+            		}
+        		}
+        	} else if (flappyBirdEasy.getGameOverStatus() == true){
+        		heart.setHeart(heart.getHeart()-1);
+        	}
+      	 	cardManager.show(this, "easyPanel");
         } else if (command.equalsIgnoreCase("Easy1") && heart.getHeart() != 0) {
-        	
+        	flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetEasy(0));
+        	add(flappyBirdEasy, "flappyBirdEasy");
+        	cardManager.show(this, "flappyBirdEasy");
         } else if (command.equalsIgnoreCase("Easy2") && heart.getHeart() != 0) {
-        	
+        	flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetEasy(1));
+        	add(flappyBirdEasy, "flappyBirdEasy");
+        	cardManager.show(this, "flappyBirdEasy");
         } else if (command.equalsIgnoreCase("Easy3") && heart.getHeart() != 0) {
-        	
+        	flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetEasy(2));
+        	add(flappyBirdEasy, "flappyBirdEasy");
+        	cardManager.show(this, "flappyBirdEasy");
         } else if (command.equalsIgnoreCase("Medium")) {
       	 	cardManager.show(this, "mediumPanel");
+        } else if (command.equalsIgnoreCase("ReturnMedium")) {
+        	if (flappyBirdMedium.getTarget() == flappyBirdMedium.getScore()) {
+        		for (int i=0; i<3; i++) {
+        			if (flappyBirdMedium.getTarget() == mediumPanel.getTargetMedium(i) && mediumPanel.getClearMedium(i) == false) {
+            			mediumPanel.setClearMedium(i, true);
+            			mediumPanel.setClearButton(i);
+            			trophy.setTrophy(trophy.getTrophy()+1);
+            			break;
+            		}
+        		}
+        	} else if (flappyBirdMedium.getGameOverStatus() == true){
+        		heart.setHeart(heart.getHeart()-1);
+        	}
+      	 	cardManager.show(this, "mediumPanel");
         } else if (command.equalsIgnoreCase("Medium1") && heart.getHeart() != 0) {
-        	
+        	flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetMedium(0));
+        	add(flappyBirdMedium, "flappyBirdMedium");
+        	cardManager.show(this, "flappyBirdMedium");
         } else if (command.equalsIgnoreCase("Medium2") && heart.getHeart() != 0) {
-        	
+        	flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetMedium(1));
+        	add(flappyBirdMedium, "flappyBirdMedium");
+        	cardManager.show(this, "flappyBirdMedium");
         } else if (command.equalsIgnoreCase("Medium3") && heart.getHeart() != 0) {
-        	
+        	flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetMedium(2));
+        	add(flappyBirdMedium, "flappyBirdMedium");
+        	cardManager.show(this, "flappyBirdMedium");
         } else if (command.equalsIgnoreCase("Hard")) {
       	 	cardManager.show(this, "hardPanel");
+        } else if (command.equalsIgnoreCase("ReturnHard")) {
+        	if (flappyBirdHard.getTarget() == flappyBirdHard.getScore()) {
+        		for (int i=0; i<3; i++) {
+        			if (flappyBirdHard.getTarget() == hardPanel.getTargetHard(i) && hardPanel.getClearHard(i) == false) {
+        				hardPanel.setClearHard(i, true);
+        				hardPanel.setClearButton(i);
+            			trophy.setTrophy(trophy.getTrophy()+1);
+            			break;
+            		}
+        		}
+        	} else if (flappyBirdHard.getGameOverStatus() == true){
+        		heart.setHeart(heart.getHeart()-1);
+        	}
+      	 	cardManager.show(this, "hardPanel");
         } else if (command.equalsIgnoreCase("Hard1") && heart.getHeart() != 0) {
-        	
+        	flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
+        	add(flappyBirdHard, "flappyBirdHard");
+        	cardManager.show(this, "flappyBirdHard");
         } else if (command.equalsIgnoreCase("Hard2") && heart.getHeart() != 0) {
-        	
+        	flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
+        	add(flappyBirdHard, "flappyBirdHard");
+        	cardManager.show(this, "flappyBirdHard");
         } else if (command.equalsIgnoreCase("Hard3") && heart.getHeart() != 0) {
-        	
+        	flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
+        	add(flappyBirdHard, "flappyBirdHard");
+        	cardManager.show(this, "flappyBirdHard");
         } 
 	}
 	
