@@ -1,16 +1,8 @@
 package com.capadogame;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class SettingDialog extends JDialog {
 	private JPanel jpSetting;
@@ -65,4 +57,5 @@ public class SettingDialog extends JDialog {
 			this.bgm.play();
 		}
 	}
+	
 }
