@@ -1,28 +1,21 @@
 package com.capadogame;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
-import javax.swing.JOptionPane;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class CardLayoutWindow extends Frame implements WindowListener, ActionListener{
 	private CardLayout cardManager;
 	private SettingDialog settingDialog;
 	private StartPanel startPanel;
-	private ProfilPanel profilPanel;
+	private ProfilePanel profilePanel;
 	private ShopPanel shopPanel;
-	private LevelPanel levelPanel;
-	private EasyPanel easyPanel;
+	private PackPanel packPanel;
+	private LevelPanel easyPanel;
 	private FlappyBirdEasy flappyBirdEasy;
-	private MediumPanel mediumPanel;
+	private LevelPanel mediumPanel;
 	private FlappyBirdMedium flappyBirdMedium;
-	private HardPanel hardPanel;
+	private LevelPanel hardPanel;
 	private FlappyBirdHard flappyBirdHard;
 	private BGM bgm;
 	private Bird bird;
@@ -32,6 +25,7 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 	private Form loginForm;
 	private boolean changeProfile;
 	private int areaWidth, areaHeight;
+			
 	
 	public CardLayoutWindow (String frameTitle) {
 		super(frameTitle);
@@ -56,19 +50,19 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		
 		settingDialog = new SettingDialog(this, bgm);
 		startPanel = new StartPanel(this, areaWidth, areaHeight, trophy, heart);
-		profilPanel = new ProfilPanel (this, areaWidth, areaHeight, trophy, heart);
+		profilePanel = new ProfilePanel (this, areaWidth, areaHeight, trophy, heart);
 		shopPanel = new ShopPanel (this, areaWidth, areaHeight, trophy, heart, bird);
-		levelPanel = new LevelPanel (this, areaWidth, areaHeight, trophy, heart);
-		easyPanel = new EasyPanel (this, areaWidth, areaHeight, trophy, heart);
-		mediumPanel = new MediumPanel (this, areaWidth, areaHeight, trophy, heart);
-		hardPanel = new HardPanel (this, areaWidth, areaHeight, trophy, heart);
+		packPanel = new PackPanel (this, areaWidth, areaHeight, trophy, heart);
+		easyPanel = new LevelPanel (this, areaWidth, areaHeight, trophy, heart, 0, 3);
+		mediumPanel = new LevelPanel (this, areaWidth, areaHeight, trophy, heart, 1, 3);
+		hardPanel = new LevelPanel (this, areaWidth, areaHeight, trophy, heart, 2, 3);
 		
 		cardManager = new CardLayout();
 		setLayout(cardManager);
 		add(startPanel, "startPanel");
-		add(profilPanel, "profilPanel");
+		add(profilePanel, "profilePanel");
 		add(shopPanel, "shopPanel");
-		add(levelPanel, "levelPanel");
+		add(packPanel, "packPanel");
 		add(easyPanel, "easyPanel");
 		add(mediumPanel, "mediumPanel");
 		add(hardPanel, "hardPanel");
@@ -86,9 +80,9 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		trophy.updateTrophy(trophy.getTrophy());
 		bird.updateBird(bird.getType());
 		shopPanel.updateBirdPurchase();
-		easyPanel.updateClearEasy();
-		mediumPanel.updateClearMedium();
-		hardPanel.updateClearHard();
+		easyPanel.updateClearLevel();;
+		mediumPanel.updateClearLevel();
+		hardPanel.updateClearLevel();
 		bgm.close();
 	}
 	public void windowClosing(WindowEvent e) {
@@ -119,16 +113,16 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 						heart.setFileNameHeartTime(profile.getUsername());
 						trophy.setFileNameTrophy(profile.getUsername());
 						bird.setFileNameBird(profile.getUsername());
-						easyPanel.setFileNameClearEasy(profile.getUsername());
-						mediumPanel.setfileNameClearMedium(profile.getUsername());
-						hardPanel.setFileNameClearHard(profile.getUsername());
+						easyPanel.setFileNameClearLevel(profile.getUsername());
+						mediumPanel.setFileNameClearLevel(profile.getUsername());
+						hardPanel.setFileNameClearLevel(profile.getUsername());
 						shopPanel.setFileNameBirdPurchase(profile.getUsername());
 						changeProfile = true;
 					}
 					startPanel.repaint();
-					profilPanel.repaint();
+					profilePanel.repaint();
 					shopPanel.repaint();
-					levelPanel.repaint();
+					packPanel.repaint();
 					easyPanel.repaint();
 					mediumPanel.repaint();
 					hardPanel.repaint();
@@ -148,19 +142,19 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 			settingDialog.setVisible(true);
 		} else if (command.equalsIgnoreCase("Start")) {
 			cardManager.show(this, "startPanel");
-		} else if (command.equalsIgnoreCase("Profil")) {
-			cardManager.show(this, "profilPanel");
+		} else if (command.equalsIgnoreCase("Profile")) {
+			cardManager.show(this, "profilePanel");
 		} else if (command.equalsIgnoreCase("Shop")) {
 			cardManager.show(this, "shopPanel");
 		} else if (command.equalsIgnoreCase("Play") || command.equalsIgnoreCase("BackLevel")) {
-			cardManager.show(this, "levelPanel");
+			cardManager.show(this, "packPanel");
 		} else if (command.equalsIgnoreCase("Easy")) {
 			cardManager.show(this, "easyPanel");
 		} else if (command.equalsIgnoreCase("ReturnEasy")) {
 			if (flappyBirdEasy.getTarget() == flappyBirdEasy.getScore()) {
-				for (int i=0; i<3; i++) {
-					if (flappyBirdEasy.getTarget() == easyPanel.getTargetEasy(i) && !easyPanel.getClearEasy(i)) {
-						easyPanel.setClearEasy(i);
+				for (int i=0; i<easyPanel.getMaxLevel(); i++) {
+					if (flappyBirdEasy.getTarget() == easyPanel.getTargetLevel(i) && !easyPanel.getClearLevel(i)) {
+						easyPanel.setClearLevel(i);
 						trophy.setTrophy(trophy.getTrophy()+1);
 						break;
 					}
@@ -169,25 +163,13 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 				heart.setHeart(heart.getHeart()-1);
 			}
 			cardManager.show(this, "easyPanel");
-		} else if (command.equalsIgnoreCase("Easy1") && heart.getHeart() != 0) {
-			flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetEasy(0));
-			add(flappyBirdEasy, "flappyBirdEasy");
-			cardManager.show(this, "flappyBirdEasy");
-		} else if (command.equalsIgnoreCase("Easy2") && heart.getHeart() != 0) {
-			flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetEasy(1));
-			add(flappyBirdEasy, "flappyBirdEasy");
-			cardManager.show(this, "flappyBirdEasy");
-		} else if (command.equalsIgnoreCase("Easy3") && heart.getHeart() != 0) {
-			flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetEasy(2));
-			add(flappyBirdEasy, "flappyBirdEasy");
-			cardManager.show(this, "flappyBirdEasy");
 		} else if (command.equalsIgnoreCase("Medium")) {
 			cardManager.show(this, "mediumPanel");
 		} else if (command.equalsIgnoreCase("ReturnMedium")) {
 			if (flappyBirdMedium.getTarget() == flappyBirdMedium.getScore()) {
-				for (int i=0; i<3; i++) {
-					if (flappyBirdMedium.getTarget() == mediumPanel.getTargetMedium(i) && !mediumPanel.getClearMedium(i)) {
-						mediumPanel.setClearMedium(i);
+				for (int i=0; i<mediumPanel.getMaxLevel(); i++) {
+					if (flappyBirdMedium.getTarget() == mediumPanel.getTargetLevel(i) && !mediumPanel.getClearLevel(i)) {
+						mediumPanel.setClearLevel(i);
 						mediumPanel.setClearButton(i);
 						trophy.setTrophy(trophy.getTrophy()+1);
 						break;
@@ -197,25 +179,13 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 				heart.setHeart(heart.getHeart()-1);
 			}
 			cardManager.show(this, "mediumPanel");
-		} else if (command.equalsIgnoreCase("Medium1") && heart.getHeart() != 0) {
-			flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetMedium(0));
-			add(flappyBirdMedium, "flappyBirdMedium");
-			cardManager.show(this, "flappyBirdMedium");
-		} else if (command.equalsIgnoreCase("Medium2") && heart.getHeart() != 0) {
-			flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetMedium(1));
-			add(flappyBirdMedium, "flappyBirdMedium");
-			cardManager.show(this, "flappyBirdMedium");
-		} else if (command.equalsIgnoreCase("Medium3") && heart.getHeart() != 0) {
-			flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetMedium(2));
-			add(flappyBirdMedium, "flappyBirdMedium");
-			cardManager.show(this, "flappyBirdMedium");
 		} else if (command.equalsIgnoreCase("Hard")) {
 			cardManager.show(this, "hardPanel");
 		} else if (command.equalsIgnoreCase("ReturnHard")) {
 			if (flappyBirdHard.getTarget() == flappyBirdHard.getScore()) {
-				for (int i=0; i<3; i++) {
-					if (flappyBirdHard.getTarget() == hardPanel.getTargetHard(i) && !hardPanel.getClearHard(i)) {
-						hardPanel.setClearHard(i);
+				for (int i=0; i<hardPanel.getMaxLevel(); i++) {
+					if (flappyBirdHard.getTarget() == hardPanel.getTargetLevel(i) && !hardPanel.getClearLevel(i)) {
+						hardPanel.setClearLevel(i);
 						hardPanel.setClearButton(i);
 						trophy.setTrophy(trophy.getTrophy()+1);
 						break;
@@ -225,21 +195,37 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 				heart.setHeart(heart.getHeart()-1);
 			}
 			cardManager.show(this, "hardPanel");
-		} else if (command.equalsIgnoreCase("Hard1") && heart.getHeart() != 0) {
-			flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
-			add(flappyBirdHard, "flappyBirdHard");
-			cardManager.show(this, "flappyBirdHard");
-		} else if (command.equalsIgnoreCase("Hard2") && heart.getHeart() != 0) {
-			flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
-			add(flappyBirdHard, "flappyBirdHard");
-			cardManager.show(this, "flappyBirdHard");
-		} else if (command.equalsIgnoreCase("Hard3") && heart.getHeart() != 0) {
-			flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
-			add(flappyBirdHard, "flappyBirdHard");
-			cardManager.show(this, "flappyBirdHard");
 		} else {
-			JOptionPane.showMessageDialog(this, String.format("%s%n%s", "You can't start the game because your heart has run out.",
-					"Just wait a moment."), "Message", JOptionPane.INFORMATION_MESSAGE);
+			if (heart.getHeart() == 0) {
+				JOptionPane.showMessageDialog(this, String.format("%s%n%s", "You can't start the game because your heart has run out.",
+						"Just wait a moment."), "Message", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				boolean found = false;
+				for (int i=0; !found && i<easyPanel.getMaxLevel(); i++) {
+					if (command.equalsIgnoreCase("Easy" + (i+1))) {
+						flappyBirdEasy = new FlappyBirdEasy(this, areaWidth, areaHeight, bird, easyPanel.getTargetLevel(i));
+						add(flappyBirdEasy, "flappyBirdEasy");
+						cardManager.show(this, "flappyBirdEasy");
+						found = true;
+					}
+				}
+				for (int i=0; !found && i<mediumPanel.getMaxLevel(); i++) {
+					if (command.equalsIgnoreCase("Medium" + (i+1))) {
+						flappyBirdMedium = new FlappyBirdMedium(this, areaWidth, areaHeight, bird, mediumPanel.getTargetLevel(i));
+						add(flappyBirdMedium, "flappyBirdMedium");
+						cardManager.show(this, "flappyBirdMedium");
+						found = true;
+					}
+				}
+				for (int i=0; !found && i<easyPanel.getMaxLevel(); i++) {
+					if (command.equalsIgnoreCase("Hard" + (i+1))) {
+						flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetLevel(i));
+						add(flappyBirdHard, "flappyBirdHard");
+						cardManager.show(this, "flappyBirdHard");
+						found = true;
+					}
+				}
+			}
 		}
 	}
 	
