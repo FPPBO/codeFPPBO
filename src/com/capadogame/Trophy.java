@@ -11,13 +11,14 @@ import java.net.URISyntaxException;
 public class Trophy {
 	private int trophy;
 	private String dataPath;
-	private String fileNameTrophy = "dataTrophy";
+	private String fileNameTrophy;
 	
 	public Trophy() {
 		try {
 			dataPath = Trophy.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e) {}
-		loadTrophy();
+		
+		this.trophy = 0;
 	}
 
 	public int getTrophy() {
@@ -26,6 +27,11 @@ public class Trophy {
 
 	public void setTrophy(int trophy) {
 		this.trophy = trophy;
+	}
+	
+	public void setFileNameTrophy(String username) {
+		fileNameTrophy = "dataTrophy" + username;
+		loadTrophy();
 	}
 	
 	public void loadTrophy() {
