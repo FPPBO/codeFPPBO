@@ -1,22 +1,8 @@
 package com.capadogame;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class BirdShop extends JPanel {
 	private int type;
@@ -33,7 +19,6 @@ public class BirdShop extends JPanel {
 	
 	public BirdShop (ShopPanel parent, int areaWidth, int areaHeight, 
 			Bird bird, Boolean[] birdPurchase, int type) {
-		/* set */
 		this.type = type;
 		setString();
 		
