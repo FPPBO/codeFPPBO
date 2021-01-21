@@ -1,13 +1,8 @@
 package com.capadogame;
 
-import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
+import java.awt.*;
+import java.io.*;
+import java.net.*;
 
 public class Bird {
 	private int type;
@@ -19,6 +14,7 @@ public class Bird {
 		try {
 			dataPath = Bird.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e) {}
+		
 		setType(0);
 	}
 	
