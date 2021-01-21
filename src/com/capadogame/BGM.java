@@ -47,5 +47,5 @@ public class BGM {
 	public void close() {
 		clip.close();
 	}
-    
+	
 }
