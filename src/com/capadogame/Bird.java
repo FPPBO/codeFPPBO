@@ -13,13 +13,13 @@ public class Bird {
 	private int type;
 	private Color color;
 	private String dataPath;
-    	private String fileNameBird = "dataBird";
-    
+	private String fileNameBird;
+	
 	public Bird() {
 		try {
 			dataPath = Bird.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e) {}
-		loadBird();
+		setType(0);
 	}
 	
 	public int getType() {
@@ -49,17 +49,22 @@ public class Bird {
 		}
 	}
 	
+	public void setFileNameBird(String username) {
+		fileNameBird = "dataBird" + username;
+		loadBird();
+	}
+	
 	public void loadBird() {
 		try {
 			File f = new File(dataPath, fileNameBird);
 			if(!f.isFile()) {
 				createBird();
-    			}
+			}
 			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
 			setType(Integer.parseInt(reader.readLine()));
 			reader.close();
-    		}
-    		catch(Exception e) { }
+		}
+		catch(Exception e) { }
 	}
 	
 	public void createBird() {
