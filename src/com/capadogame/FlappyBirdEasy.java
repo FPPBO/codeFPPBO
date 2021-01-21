@@ -63,10 +63,6 @@ public class FlappyBirdEasy extends JPanel implements ActionListener, MouseListe
         timer.start();
     }
     
-    public FlappyBirdEasy getThis() {
-    	return this;
-    }
-    
     //membuat balok rintangan
     public void addColumn(boolean start){
         int space = 250;
@@ -208,6 +204,10 @@ public class FlappyBirdEasy extends JPanel implements ActionListener, MouseListe
     
     public boolean getGameOverStatus() {
     	return gameOver;
+    }
+    
+    public boolean getStartedStatus() {
+    	return started;
     }
     
     public int getScore() {
