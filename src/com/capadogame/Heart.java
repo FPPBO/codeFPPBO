@@ -13,15 +13,17 @@ import java.net.URISyntaxException;
 import javax.swing.Timer;
 
 public class Heart {
+	private final int TIMELIMIT = 900;
+	private final int HEARTLIMIT = 5;
 	private int heart;
 	private Timer heartTimer;
 	private int time, minute, second;
 	private String displayTimer, displayMin, displaySec;
 	private String dataPath;
-    	private String fileNameHeart = "dataHeart";
-    	private String fileNameTime = "dataTime";
+	private String fileNameHeart;
+	private String fileNameTime;
 	
-    	public Heart() {
+	public Heart() {
 		try {
 			dataPath = Heart.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e1) { }
@@ -29,21 +31,21 @@ public class Heart {
 		heartTimer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (time >= 0){
+				if (time > 0){
+					time--;
 					minute = time/60;
 					second = time%60;
 					setDisplayTimer(minute, second);
-					time--;
 				} else {
-					time = 900;
+					time = TIMELIMIT;
 					heartTimer.stop();
 					setHeart(getHeart()+1);
 				}
 			}
 		});
 		
-		loadHeart();
-		loadTime();
+		setHeart(HEARTLIMIT);
+		time = TIMELIMIT;
 	}
 	
 	public int getHeart() {
@@ -52,9 +54,9 @@ public class Heart {
 	
 	public void setHeart(int heart) {
 		this.heart = heart;
-		if (this.heart == 5) {
+		if (this.heart == HEARTLIMIT) {
 			setDisplayTimer();
-		} else if (this.heart < 5 && !heartTimer.isRunning()) {
+		} else if (this.heart < HEARTLIMIT && !heartTimer.isRunning()) {
 			heartTimer.start();
 		} 
 	}
@@ -87,17 +89,24 @@ public class Heart {
 		heartTimer.stop();
 	}
 	
+	public void setFileNameHeartTime(String username) {
+		fileNameHeart = "dataHeart" + username;
+		fileNameTime = "dataTime" + username;
+		loadHeart();
+		loadTime();
+	}
+	
 	public void loadHeart() {
 		try {
-    		File f = new File(dataPath, fileNameHeart);
-    		if(!f.isFile()) {
-    			createHeart();
-    		}
-    		BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
-    		setHeart(Integer.parseInt(reader.readLine()));
-    		reader.close();
-    	}
-    	catch(Exception e) { }
+			File f = new File(dataPath, fileNameHeart);
+			if(!f.isFile()) {
+				createHeart();
+			}
+			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+			setHeart(Integer.parseInt(reader.readLine()));
+			reader.close();
+		}
+		catch(Exception e) { }
 	}
 	
 	public void loadTime() {
@@ -119,7 +128,7 @@ public class Heart {
 
 			FileWriter output = new FileWriter(file);
 			BufferedWriter writer = new BufferedWriter(output);
-			writer.write("5");
+			writer.write(String.valueOf(HEARTLIMIT));
 
 			writer.close();
 		}
@@ -132,7 +141,7 @@ public class Heart {
 
 			FileWriter output = new FileWriter(file);
 			BufferedWriter writer = new BufferedWriter(output);
-			writer.write("900");
+			writer.write(String.valueOf(TIMELIMIT));
 
 			writer.close();
 		}
