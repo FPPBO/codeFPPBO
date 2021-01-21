@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -28,7 +27,7 @@ public class StartPanel extends JPanel {
 	private Heart heart;
 	private JLabel jlStart;
 	private ImageIcon iiSetting, iiPlay, iiStart, iiProfil, iiShop;
-	private BufferedImage biSetting, biTrophy, biHeart;
+	private BufferedImage biTrophy, biHeart;
 	private JButton jbSetting, jbPlay, jbStart, jbProfil, jbShop;
 	private JPanel topBar, centerBox, bottomBar;
 	private BoxLayout boxLayoutTB, boxLayoutCB, boxLayoutBB;
@@ -146,7 +145,7 @@ public class StartPanel extends JPanel {
 		
 		drawTrophy(g);
 		drawHeart(g);
-	    }
+	}
 	
 	public void drawTrophy(Graphics g) {
 		g.setColor(new Color(245, 222, 89));
@@ -186,14 +185,14 @@ public class StartPanel extends JPanel {
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
-	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
+		Graphics2D g2d = dimg.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
 
-	    return dimg;
-	}  
+		return dimg;
+	}
 	
 }
