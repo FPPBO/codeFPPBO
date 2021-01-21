@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class EasyPanel extends JPanel {
+	private final int LEVEL = 3;
 	private int areaWidth, areaHeight;
 	private Trophy trophy;
 	private Heart heart;
@@ -47,7 +48,7 @@ public class EasyPanel extends JPanel {
 	private FlowLayout flowLayoutSB;
 	private BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
 	private String dataPath;
-	private String fileNameClearEasy = "dataClearEasy";
+	private String fileNameClearEasy;
 	
 	public EasyPanel (CardLayoutWindow parent, int areaWidth, int areaHeight,
 			Trophy trophy, Heart heart) {
@@ -111,15 +112,19 @@ public class EasyPanel extends JPanel {
 		flowLayoutSB = new FlowLayout(FlowLayout.LEFT, 10, 10);
 		selectBox.setLayout(flowLayoutSB);
 		
-		targetEasy = new int[3];
+		targetEasy = new int[LEVEL];
 		targetEasy[0] = 3;
 		targetEasy[1] = 5;
 		targetEasy[2] = 7;
-		clearEasy = new Boolean[3];
-		loadClearEasy();
+		
+		clearEasy = new Boolean[LEVEL];
+		for (int i=0; i<clearEasy.length; i++) {
+			clearEasy[i] = false;
+		}
+		
 		jbEasy = new ArrayList<JButton>();
 		iiEasy = new ArrayList<ImageIcon>();
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<LEVEL; i++) {
 			jbEasy.add(new JButton());
 			jbEasy.get(i).setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createRaisedSoftBevelBorder(), 
@@ -130,13 +135,9 @@ public class EasyPanel extends JPanel {
 			jbEasy.get(i).setBackground(new Color(250, 220, 90));
 			jbEasy.get(i).setActionCommand("Easy" + (i+1));
 			
-			if (clearEasy[i] == true) {
-				setClearButton(i);
-			} else {
-				iiEasy.add(new ImageIcon(new ImageIcon("res/feasy-" + (i+1) + ".png").getImage().
-						getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
-				jbEasy.get(i).setIcon(iiEasy.get(i));
-			}
+			iiEasy.add(new ImageIcon(new ImageIcon("res/feasy-" + (i+1) + ".png").getImage().
+					getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+			jbEasy.get(i).setIcon(iiEasy.get(i));
 		}
 				
 		for (JButton jbEasy: jbEasy) {
@@ -211,8 +212,9 @@ public class EasyPanel extends JPanel {
 		return clearEasy[index];
 	}
 	
-	public void setClearEasy(int index, Boolean clear) {
-		clearEasy[index] = clear;
+	public void setClearEasy(int index) {
+		clearEasy[index] = true;
+		setClearButton(index);
 	}
 	
 	public void setClearButton(int index) {
@@ -221,17 +223,23 @@ public class EasyPanel extends JPanel {
 		jbEasy.get(index).setIcon(iiEasy.get(index));
 	}
 	
+	public void setFileNameClearEasy(String username) {
+		fileNameClearEasy = "dataClearEasy" + username;
+		loadClearEasy();
+	}
+	
 	public void loadClearEasy() {
 		try {
 			File f = new File(dataPath, fileNameClearEasy);
 			if(!f.isFile()) {
 				createClearEasy();
-    			}
+			}
 			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
 			for (int i=0; i<clearEasy.length; i++) {
-				clearEasy[i] = Boolean.parseBoolean(reader.readLine());
+				if (Boolean.parseBoolean(reader.readLine()))
+					setClearEasy(i);
 			}
-    			reader.close();
+			reader.close();
 		}
 		catch(Exception e) { }
 	}
@@ -314,14 +322,14 @@ public class EasyPanel extends JPanel {
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
-	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
+		Graphics2D g2d = dimg.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
 
-	    return dimg;
+		return dimg;
 	} 
 	
 }
