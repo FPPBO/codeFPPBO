@@ -1,13 +1,7 @@
 package com.capadogame;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.*;
+import javax.sound.sampled.*;
 
 public class BGM {
 	private File fileIn;
@@ -16,7 +10,7 @@ public class BGM {
 	
 	public BGM() {
 		try {
-			fileIn = new File("C:/Users/Hp/git/CapadoGame/res/bgm.wav");
+			fileIn = new File(System.getProperty("user.dir") + "/res/bgm.wav");
 			audioIn = AudioSystem.getAudioInputStream(fileIn);
 			clip = AudioSystem.getClip();
 			clip.open(audioIn);
