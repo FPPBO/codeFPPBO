@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JOptionPane;
+
 public class CardLayoutWindow extends Frame implements WindowListener, ActionListener{
 	private CardLayout cardManager;
 	private SettingDialog settingDialog;
@@ -26,6 +28,9 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 	private Bird bird;
 	private Trophy trophy;
 	private Heart heart;
+	private Profile profile;
+	private Form loginForm;
+	private boolean changeProfile;
 	private int areaWidth, areaHeight;
 	
 	public CardLayoutWindow (String frameTitle) {
@@ -45,11 +50,14 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		bird = new Bird();
 		trophy = new Trophy();
 		heart = new Heart();
+		profile = new Profile();
+		loginForm = new Form(profile);
+		changeProfile = false;
 		
 		settingDialog = new SettingDialog(this, bgm);
 		startPanel = new StartPanel(this, areaWidth, areaHeight, trophy, heart);
 		profilPanel = new ProfilPanel (this, areaWidth, areaHeight, trophy, heart);
-		shopPanel  = new ShopPanel (this, areaWidth, areaHeight, trophy, heart, bird);
+		shopPanel = new ShopPanel (this, areaWidth, areaHeight, trophy, heart, bird);
 		levelPanel = new LevelPanel (this, areaWidth, areaHeight, trophy, heart);
 		easyPanel = new EasyPanel (this, areaWidth, areaHeight, trophy, heart);
 		mediumPanel = new MediumPanel (this, areaWidth, areaHeight, trophy, heart);
@@ -86,6 +94,7 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 	public void windowClosing(WindowEvent e) {
 		bgm.stop();
 		this.dispose();
+		loginForm.dispose();
 	}
 	public void windowDeactivated(WindowEvent e) {
 		// do nothing
@@ -99,12 +108,23 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 	public void windowOpened(WindowEvent e) {
 		cardManager.show(this, "startPanel");
 		bgm.play();
+		loginForm.setVisible(true);
 	}
 	
 	public void startThread() {
 		Thread windowThread = new Thread() {
 			public void run() {
 				while (true) {
+					if (!changeProfile && profile.getUsername() != "") {
+						heart.setFileNameHeartTime(profile.getUsername());
+						trophy.setFileNameTrophy(profile.getUsername());
+						bird.setFileNameBird(profile.getUsername());
+						easyPanel.setFileNameClearEasy(profile.getUsername());
+						mediumPanel.setfileNameClearMedium(profile.getUsername());
+						hardPanel.setFileNameClearHard(profile.getUsername());
+						shopPanel.setFileNameBirdPurchase(profile.getUsername());
+						changeProfile = true;
+					}
 					startPanel.repaint();
 					profilPanel.repaint();
 					shopPanel.repaint();
@@ -139,9 +159,8 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		} else if (command.equalsIgnoreCase("ReturnEasy")) {
 			if (flappyBirdEasy.getTarget() == flappyBirdEasy.getScore()) {
 				for (int i=0; i<3; i++) {
-					if (flappyBirdEasy.getTarget() == easyPanel.getTargetEasy(i) && easyPanel.getClearEasy(i) == false) {
-						easyPanel.setClearEasy(i, true);
-						easyPanel.setClearButton(i);
+					if (flappyBirdEasy.getTarget() == easyPanel.getTargetEasy(i) && !easyPanel.getClearEasy(i)) {
+						easyPanel.setClearEasy(i);
 						trophy.setTrophy(trophy.getTrophy()+1);
 						break;
 					}
@@ -167,8 +186,8 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		} else if (command.equalsIgnoreCase("ReturnMedium")) {
 			if (flappyBirdMedium.getTarget() == flappyBirdMedium.getScore()) {
 				for (int i=0; i<3; i++) {
-					if (flappyBirdMedium.getTarget() == mediumPanel.getTargetMedium(i) && mediumPanel.getClearMedium(i) == false) {
-						mediumPanel.setClearMedium(i, true);
+					if (flappyBirdMedium.getTarget() == mediumPanel.getTargetMedium(i) && !mediumPanel.getClearMedium(i)) {
+						mediumPanel.setClearMedium(i);
 						mediumPanel.setClearButton(i);
 						trophy.setTrophy(trophy.getTrophy()+1);
 						break;
@@ -195,8 +214,8 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 		} else if (command.equalsIgnoreCase("ReturnHard")) {
 			if (flappyBirdHard.getTarget() == flappyBirdHard.getScore()) {
 				for (int i=0; i<3; i++) {
-					if (flappyBirdHard.getTarget() == hardPanel.getTargetHard(i) && hardPanel.getClearHard(i) == false) {
-						hardPanel.setClearHard(i, true);
+					if (flappyBirdHard.getTarget() == hardPanel.getTargetHard(i) && !hardPanel.getClearHard(i)) {
+						hardPanel.setClearHard(i);
 						hardPanel.setClearButton(i);
 						trophy.setTrophy(trophy.getTrophy()+1);
 						break;
@@ -218,7 +237,10 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 			flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetHard(0));
 			add(flappyBirdHard, "flappyBirdHard");
 			cardManager.show(this, "flappyBirdHard");
-		} 
+		} else {
+			JOptionPane.showMessageDialog(this, String.format("%s%n%s", "You can't start the game because your heart has run out.",
+					"Just wait a moment."), "Message", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	
 }
