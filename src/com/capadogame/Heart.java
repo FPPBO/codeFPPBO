@@ -1,16 +1,9 @@
 package com.capadogame;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-
-import javax.swing.Timer;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
 
 public class Heart {
 	private final int TIMELIMIT = 900;
@@ -44,8 +37,8 @@ public class Heart {
 			}
 		});
 		
-		setHeart(HEARTLIMIT);
 		time = TIMELIMIT;
+		setHeart(HEARTLIMIT);
 	}
 	
 	public int getHeart() {
@@ -57,6 +50,7 @@ public class Heart {
 		if (this.heart == HEARTLIMIT) {
 			setDisplayTimer();
 		} else if (this.heart < HEARTLIMIT && !heartTimer.isRunning()) {
+			setDisplayTimer(time/60, time%60);
 			heartTimer.start();
 		} 
 	}
@@ -92,21 +86,8 @@ public class Heart {
 	public void setFileNameHeartTime(String username) {
 		fileNameHeart = "dataHeart" + username;
 		fileNameTime = "dataTime" + username;
-		loadHeart();
 		loadTime();
-	}
-	
-	public void loadHeart() {
-		try {
-			File f = new File(dataPath, fileNameHeart);
-			if(!f.isFile()) {
-				createHeart();
-			}
-			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
-			setHeart(Integer.parseInt(reader.readLine()));
-			reader.close();
-		}
-		catch(Exception e) { }
+		loadHeart();
 	}
 	
 	public void loadTime() {
@@ -117,6 +98,46 @@ public class Heart {
 			}
 			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
 			time = Integer.parseInt(reader.readLine());
+			reader.close();
+		}
+		catch(Exception e) { }
+	}
+	
+	public void createTime() {
+		try {
+			File file = new File(dataPath, fileNameTime);
+
+			FileWriter output = new FileWriter(file);
+			BufferedWriter writer = new BufferedWriter(output);
+			writer.write(String.valueOf(TIMELIMIT));
+
+			writer.close();
+		}
+		catch(Exception e) { }
+	}
+	
+	public void updateTime() {
+		FileWriter output = null;
+		try {
+			File f = new File(dataPath, fileNameTime);
+			output = new FileWriter(f);
+			BufferedWriter writer = new BufferedWriter(output); 
+
+			writer.write(String.valueOf(this.time));
+
+			writer.close();
+		}
+		catch(Exception e) { }
+	}
+	
+	public void loadHeart() {
+		try {
+			File f = new File(dataPath, fileNameHeart);
+			if(!f.isFile()) {
+				createHeart();
+			}
+			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
+			setHeart(Integer.parseInt(reader.readLine()));
 			reader.close();
 		}
 		catch(Exception e) { }
@@ -135,19 +156,6 @@ public class Heart {
 		catch(Exception e) { }
 	}
 	
-	public void createTime() {
-		try {
-			File file = new File(dataPath, fileNameTime);
-
-			FileWriter output = new FileWriter(file);
-			BufferedWriter writer = new BufferedWriter(output);
-			writer.write(String.valueOf(TIMELIMIT));
-
-			writer.close();
-		}
-		catch(Exception e) { }
-	}
-	
 	public void updateHeart(int Heart) {
 		FileWriter output = null;
 		try {
@@ -156,20 +164,6 @@ public class Heart {
 			BufferedWriter writer = new BufferedWriter(output); 
 
 			writer.write(String.valueOf(heart));
-
-			writer.close();
-		}
-		catch(Exception e) { }
-	}
-	
-	public void updateTime() {
-		FileWriter output = null;
-		try {
-			File f = new File(dataPath, fileNameTime);
-			output = new FileWriter(f);
-			BufferedWriter writer = new BufferedWriter(output); 
-
-			writer.write(String.valueOf(this.time));
 
 			writer.close();
 		}
