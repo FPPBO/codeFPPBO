@@ -29,14 +29,14 @@ public class FlappyBirdMedium extends JPanel implements ActionListener, MouseLis
     	yMotion = 0;
     	score = 0;
         timer = new Timer(20, this);
-
+        
         addMouseListener(this);
         addKeyListener(this);
         addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                FlappyBirdMedium.this.requestFocusInWindow(); // set fokus
-            }
+        	@Override
+        	public void componentShown(ComponentEvent e) {
+        		FlappyBirdMedium.this.requestFocusInWindow(); // set fokus
+        	}
         });
         
         bird = new Rectangle(areaWidth/2 - 10, areaHeight/2 - 10, 20, 20);
@@ -46,19 +46,19 @@ public class FlappyBirdMedium extends JPanel implements ActionListener, MouseLis
         
         jbReturn = new JButton("Click Here To Return");
         jbReturn.setFont(new Font("Arial", Font.PLAIN, 20));
-    	jbReturn.setBackground(Color.ORANGE);
-    	jbReturn.setForeground(Color.WHITE);
-    	jbReturn.setFocusPainted(false);
-    	jbReturn.setBorderPainted(false);
-    	jbReturn.setActionCommand("ReturnMedium");
-    	jbReturn.addActionListener(parent);
-    	add(jbReturn, BorderLayout.SOUTH);
-    	
+        jbReturn.setBackground(Color.ORANGE);
+        jbReturn.setForeground(Color.WHITE);
+        jbReturn.setFocusPainted(false);
+        jbReturn.setBorderPainted(false);
+        jbReturn.setActionCommand("ReturnMedium");
+        jbReturn.addActionListener(parent);
+        add(jbReturn, BorderLayout.SOUTH);
+        
         addColumn(true);
         addColumn(true);
         addColumn(true);
         addColumn(true);
-
+        
         timer.start();
     }
 
