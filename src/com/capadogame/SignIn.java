@@ -1,23 +1,11 @@
 package com.capadogame;
 
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JPasswordField;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.io.*;
+import java.net.*;
 
 public class SignIn extends JPanel {
 	
@@ -136,8 +124,6 @@ public class SignIn extends JPanel {
 		signIn.setFont(new Font("Imprint MT Shadow", Font.BOLD, 15));
 		signIn.setBounds(233, 344, 135, 27);
 		add(signIn);
-		
-		
 	}
 	
 	public void clearField() {
@@ -149,4 +135,5 @@ public class SignIn extends JPanel {
 		wrongUser.setText("");
 		wrongPass.setText("");
 	}
+	
 }
