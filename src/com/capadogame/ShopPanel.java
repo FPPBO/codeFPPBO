@@ -21,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -31,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ShopPanel extends JPanel implements ActionListener {
+	private int BIRDSHOPLIMIT = 5;
 	private int areaWidth, areaHeight;
 	private Trophy trophy;
 	private Heart heart;
@@ -46,9 +49,10 @@ public class ShopPanel extends JPanel implements ActionListener {
 	private CardLayout cardManagerBird;
 	private JPanel birdTitle;
 	private FlowLayout flowLayoutBT;
-	private JPanel birdShop, birdShop0, birdShop1, birdShop2, birdShop3, birdShop4;
+	private JPanel birdArea;
+	private List<JPanel> birdShop;
 	private String dataPath;
-	private String fileNameBirdPurchase = "dataBirdPurchase";
+	private String fileNameBirdPurchase;
 	
 	public ShopPanel (CardLayoutWindow parent, int areaWidth, int areaHeight, 
 			Trophy trophy, Heart heart, Bird bird) {
@@ -98,37 +102,35 @@ public class ShopPanel extends JPanel implements ActionListener {
 		birdTitle.add(jlBird);
 		birdTitle.setBackground(new Color(185, 226, 245));
 		
-		birdShop = new JPanel();
+		birdArea = new JPanel();
 		cardManagerBird = new CardLayout();
-		birdShop.setLayout(cardManagerBird);
+		birdArea.setLayout(cardManagerBird);
 		
-		birdPurchase = new Boolean[5];
-		loadBirdPurchase();
-		birdShop0 = new BirdShop(this, areaWidth, areaHeight, bird, birdPurchase, 0);
-		birdShop1 = new BirdShop(this, areaWidth, areaHeight, bird, birdPurchase, 1);
-		birdShop2 = new BirdShop(this, areaWidth, areaHeight, bird, birdPurchase, 2);
-		birdShop3 = new BirdShop(this, areaWidth, areaHeight, bird, birdPurchase, 3);
-		birdShop4 = new BirdShop(this, areaWidth, areaHeight, bird, birdPurchase, 4);
-		((BirdShop) birdShop0).setNextBird(birdShop1);
-		((BirdShop) birdShop1).setNextBird(birdShop2);
-		((BirdShop) birdShop2).setNextBird(birdShop3);
-		((BirdShop) birdShop3).setNextBird(birdShop4);
-		((BirdShop) birdShop1).setPrevBird(birdShop0);
-		((BirdShop) birdShop2).setPrevBird(birdShop1);
-		((BirdShop) birdShop3).setPrevBird(birdShop2);
-		((BirdShop) birdShop4).setPrevBird(birdShop3);
+		birdPurchase = new Boolean[BIRDSHOPLIMIT];
+		birdPurchase[0] = true;
+		for (int i=1; i<birdPurchase.length; i++) {
+			birdPurchase[i] = false;
+		}
+		birdShop = new ArrayList<JPanel>();
+		for (int i=0; i<BIRDSHOPLIMIT; i++) {
+			birdShop.add(new BirdShop(this, areaWidth, areaHeight, bird, birdPurchase, i));
+		}
+		for (int i=0; i<birdShop.size(); i++) {
+			if (i != 0)
+				((BirdShop) birdShop.get(i)).setPrevBird(birdShop.get(i-1));
+			if (i != birdShop.size()-1)
+				((BirdShop) birdShop.get(i)).setNextBird(birdShop.get(i+1));
+		}
 		
-		birdShop.add(birdShop0, "birdShop0");
-		birdShop.add(birdShop1, "birdShop1");
-		birdShop.add(birdShop2, "birdShop2");
-		birdShop.add(birdShop3, "birdShop3");
-		birdShop.add(birdShop4, "birdShop4");
-		cardManagerBird.show(birdShop, "birdShop0");
+		for (int i=0; i<birdShop.size(); i++) {
+			birdArea.add(birdShop.get(i), "birdShop" + i);
+		}
+		cardManagerBird.show(birdArea, "birdShop0");
 		
 		centerBox.add(Box.createRigidArea(new Dimension(0, 15)));
 		centerBox.add(birdTitle);
 		centerBox.add(Box.createRigidArea(new Dimension(0, 5)));
-		centerBox.add(birdShop);
+		centerBox.add(birdArea);
 		centerBox.add(Box.createRigidArea(new Dimension(0, 300)));
 		centerBox.setBackground(new Color(185, 226, 245));
 		
@@ -185,6 +187,11 @@ public class ShopPanel extends JPanel implements ActionListener {
 		jbShop.addActionListener(parent);
 	}
 	
+	public void setFileNameBirdPurchase(String username) {
+		fileNameBirdPurchase = "dataBirdPurchase" + username;
+		loadBirdPurchase();
+	}
+	
 	public void loadBirdPurchase() {
 		try {
 			File f = new File(dataPath, fileNameBirdPurchase);
@@ -196,6 +203,7 @@ public class ShopPanel extends JPanel implements ActionListener {
 				birdPurchase[i] = Boolean.parseBoolean(reader.readLine());
 			}
 			reader.close();
+			((BirdShop) birdShop.get(0)).setButton(bird, birdPurchase);
 		}
 		catch(Exception e) { }
 	}
@@ -235,31 +243,15 @@ public class ShopPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if (command.equalsIgnoreCase("BirdPrev1")) { // ke 0 dari 1
-			((BirdShop) ((BirdShop) birdShop1).getPrevBird()).setButton(bird, birdPurchase);
-			cardManagerBird.show(birdShop, "birdShop0");
-		} else if (command.equalsIgnoreCase("BirdNext0")) { // ke 1 dari 0
-			((BirdShop) ((BirdShop) birdShop0).getNextBird()).setButton(bird, birdPurchase);
-			cardManagerBird.show(birdShop, "birdShop1");
-		} else if (command.equalsIgnoreCase("BirdPrev2")) { // ke 1 dari 2
-			((BirdShop) ((BirdShop) birdShop2).getPrevBird()).setButton(bird, birdPurchase);
-			cardManagerBird.show(birdShop, "birdShop1");
-		} else if (command.equalsIgnoreCase("BirdNext1")) { // ke 2 dari 1
-		    ((BirdShop) ((BirdShop) birdShop1).getNextBird()).setButton(bird, birdPurchase);
-		    cardManagerBird.show(birdShop, "birdShop2");
-		} else if (command.equalsIgnoreCase("BirdPrev3")) { // ke 2 dari 3
-		    ((BirdShop) ((BirdShop) birdShop3).getPrevBird()).setButton(bird, birdPurchase);
-		    cardManagerBird.show(birdShop, "birdShop2");
-		} else if (command.equalsIgnoreCase("BirdNext2")) { // ke 3 dari 2
-		    ((BirdShop) ((BirdShop) birdShop2).getNextBird()).setButton(bird, birdPurchase);
-		    cardManagerBird.show(birdShop, "birdShop3");
-		} else if (command.equalsIgnoreCase("BirdPrev4")) { // ke 3 dari 4
-		    ((BirdShop) ((BirdShop) birdShop4).getPrevBird()).setButton(bird, birdPurchase);
-		    cardManagerBird.show(birdShop, "birdShop3");
-		} else if (command.equalsIgnoreCase("BirdNext3")) { // ke 4 dari 3
-		    ((BirdShop) ((BirdShop) birdShop3).getNextBird()).setButton(bird, birdPurchase);
-		    cardManagerBird.show(birdShop, "birdShop4");
-		} 
+		for (int i=0; i<birdShop.size(); i++) {
+			if (i!=0 && command.equalsIgnoreCase("BirdPrev" + i)) { // dari i ke i-1
+				((BirdShop) ((BirdShop) birdShop.get(i)).getPrevBird()).setButton(bird, birdPurchase);
+				cardManagerBird.show(birdArea, "birdShop" + (i-1));
+			} else if (i!=birdShop.size()-1 && command.equalsIgnoreCase("BirdNext" + i)) { // dari i ke i+1
+				((BirdShop) ((BirdShop) birdShop.get(i)).getNextBird()).setButton(bird, birdPurchase);
+				cardManagerBird.show(birdArea, "birdShop" + (i+1));
+			} 
+		}
 	}
 	
 	public void paintComponent(Graphics g){
@@ -269,11 +261,11 @@ public class ShopPanel extends JPanel implements ActionListener {
 		
 		drawTrophy(g);
 		drawHeart(g);
-	    }
+	}
 	
 	public void drawTrophy(Graphics g) {
 		g.setColor(new Color(245, 222, 89));
-        	g.setFont(new Font("Monospaced", Font.BOLD, 38));
+		g.setFont(new Font("Monospaced", Font.BOLD, 38));
 		FontMetrics metrics = getFontMetrics(g.getFont());
 
 		g.drawImage(resize(biTrophy, areaHeight/12, areaHeight/12), 
@@ -309,14 +301,14 @@ public class ShopPanel extends JPanel implements ActionListener {
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
-	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
+		Graphics2D g2d = dimg.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
 
-	    return dimg;
+		return dimg;
 	} 
 	
 }
