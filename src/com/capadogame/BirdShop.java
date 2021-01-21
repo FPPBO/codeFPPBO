@@ -89,7 +89,7 @@ public class BirdShop extends JPanel {
 		jtaDescription.setOpaque(false);
 		jtaDescription.setEditable(false);
 		
-        	c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 1;
 		c.gridy = 1;
 		c.insets = new Insets(0, 30, 0, 0);
@@ -109,7 +109,7 @@ public class BirdShop extends JPanel {
 				jbSelect.setText("Selected");
 				jbSelect.setBackground(new Color(217, 217, 217));
 			}
-		});  
+		});
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weighty = 1;
@@ -128,8 +128,8 @@ public class BirdShop extends JPanel {
 		jbPurchase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int choose = JOptionPane.showConfirmDialog(parent, 
-									   "Are you sure you want to buy \"" + title + "\"?", 
-									   "Confirm Buy", JOptionPane.YES_NO_OPTION);
+						"Are you sure you want to buy \"" + title + "\"?",
+						"Confirm Buy", JOptionPane.YES_NO_OPTION);
 				if (choose == JOptionPane.YES_OPTION) {
 					birdPurchase[type] = true;
 					setButton(bird, birdPurchase);
