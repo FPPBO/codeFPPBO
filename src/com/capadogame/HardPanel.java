@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HardPanel extends JPanel {
+	private final int LEVEL = 3;
 	private int areaWidth, areaHeight;
 	private Trophy trophy;
 	private Heart heart;
@@ -47,7 +48,7 @@ public class HardPanel extends JPanel {
 	private FlowLayout flowLayoutSB;
 	private BorderLayout borderLayoutP, borderLayoutCB, borderLayoutTLB;
 	private String dataPath;
-	private String fileNameClearHard = "dataClearHard";
+	private String fileNameClearHard;
 	
 	public HardPanel (CardLayoutWindow parent, int areaWidth, int areaHeight,
 			Trophy trophy, Heart heart) {
@@ -111,15 +112,19 @@ public class HardPanel extends JPanel {
 		flowLayoutSB = new FlowLayout(FlowLayout.LEFT, 10, 10);
 		selectBox.setLayout(flowLayoutSB);
 		
-		targetHard = new int[3];
+		targetHard = new int[LEVEL];
 		targetHard[0] = 12;
 		targetHard[1] = 16;
 		targetHard[2] = 22;
-		clearHard = new Boolean[3];
-		loadClearHard();
+		
+		clearHard = new Boolean[LEVEL];
+		for (int i=0; i<clearHard.length; i++) {
+			clearHard[i] = false;
+		}
+		
 		jbHard = new ArrayList<JButton>();
 		iiHard = new ArrayList<ImageIcon>();
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<LEVEL; i++) {
 			jbHard.add(new JButton());
 			jbHard.get(i).setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createRaisedSoftBevelBorder(), 
@@ -130,13 +135,9 @@ public class HardPanel extends JPanel {
 			jbHard.get(i).setBackground(new Color(250, 220, 90));
 			jbHard.get(i).setActionCommand("Hard" + (i+1));
 			
-			if (clearHard[i] == true) {
-				setClearButton(i);
-			} else {
-				iiHard.add(new ImageIcon(new ImageIcon("res/fhard-" + (i+1) + ".png").getImage().
-						getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
-				jbHard.get(i).setIcon(iiHard.get(i));
-			}
+			iiHard.add(new ImageIcon(new ImageIcon("res/fhard-" + (i+1) + ".png").getImage().
+					getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
+			jbHard.get(i).setIcon(iiHard.get(i));
 		}
 				
 		for (JButton jbHard: jbHard) {
@@ -212,14 +213,20 @@ public class HardPanel extends JPanel {
 		return clearHard[index];
 	}
 	
-	public void setClearHard(int index, Boolean clear) {
-		clearHard[index] = clear;
+	public void setClearHard(int index) {
+		clearHard[index] = true;
+		setClearButton(index);
 	}
 	
 	public void setClearButton(int index) {
 		iiHard.add(index, new ImageIcon(new ImageIcon("res/chard-" + (index+1) + ".png").getImage().
 				getScaledInstance(areaHeight/8, areaHeight/8, Image.SCALE_SMOOTH)));
 		jbHard.get(index).setIcon(iiHard.get(index));
+	}
+	
+	public void setFileNameClearHard(String username) {
+		fileNameClearHard = "dataClearHard" + username;
+		loadClearHard();
 	}
 	
 	public void loadClearHard() {
@@ -230,7 +237,8 @@ public class HardPanel extends JPanel {
 			}
 			BufferedReader reader = new BufferedReader(new InputStreamReader (new FileInputStream(f)));
 			for (int i=0; i<clearHard.length; i++) {
-				clearHard[i] = Boolean.parseBoolean(reader.readLine());
+				if (Boolean.parseBoolean(reader.readLine()))
+					setClearHard(i);
 			}
 			reader.close();
 		}
@@ -315,13 +323,13 @@ public class HardPanel extends JPanel {
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
-	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
+		Graphics2D g2d = dimg.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
 
-	    return dimg;
+		return dimg;
 	}
 }
