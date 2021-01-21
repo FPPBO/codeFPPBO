@@ -1,14 +1,8 @@
 package com.capadogame;
 
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 public class SignUp extends JPanel {
 	
@@ -18,8 +12,6 @@ public class SignUp extends JPanel {
 	private JLabel wrongUsername;
 	private JLabel wrongPassword;
 	private JLabel noMatch;
-	public static String nameRegis;
-	public static String passRegis;
 
 	public SignUp(Form parent) {
 		
@@ -137,4 +129,5 @@ public class SignUp extends JPanel {
 		wrongPassword.setText("");
 		noMatch.setText("");
 	}
+	
 }
