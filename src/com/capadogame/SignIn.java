@@ -37,7 +37,7 @@ public class SignIn extends JPanel {
 		JLabel password = new JLabel("");
 		password.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		password.setBounds(138, 173, 39, 38);
-//		password.setIcon(new ImageIcon(SignIn.class.getResource("/image/pass.png")));
+		password.setIcon(new ImageIcon(SignIn.class.getResource("/image/pass.png")));
 		password.setHorizontalAlignment(SwingConstants.CENTER);
 		add(password);
 		
@@ -57,7 +57,7 @@ public class SignIn extends JPanel {
 		JLabel username = new JLabel("");
 		username.setBounds(138, 112, 39, 38);
 		username.setHorizontalAlignment(SwingConstants.CENTER);
-//		username.setIcon(new ImageIcon(SignIn.class.getResource("/image/user.png")));
+		username.setIcon(new ImageIcon(SignIn.class.getResource("/image/user.png")));
 		add(username);
 		
 		JLabel instruction = new JLabel("please insert your username and password");
