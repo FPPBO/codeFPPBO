@@ -121,7 +121,7 @@ public class ProfilPanel extends JPanel {
 		
 		drawTrophy(g);
 		drawHeart(g);
-	    }
+	}
 	
 	public void drawTrophy(Graphics g) {
 		g.setColor(new Color(245, 222, 89));
@@ -161,14 +161,14 @@ public class ProfilPanel extends JPanel {
 	}
 	
 	public BufferedImage resize(BufferedImage img, int newW, int newH) { 
-	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+		Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
 
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
+		Graphics2D g2d = dimg.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
 
-	    return dimg;
+		return dimg;
 	} 
 	
 }
