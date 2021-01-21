@@ -7,7 +7,7 @@ public class MainCard {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				CardLayoutWindow frame = new CardLayoutWindow("CapadoGame6");
+				CardLayoutWindow frame = new CardLayoutWindow("CapadoGame");
 				frame.setVisible(true);
 			}
 		});
