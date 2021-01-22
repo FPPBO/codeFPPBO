@@ -151,13 +151,16 @@ public class ShopPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		for (int i=0; i<birdShop.size(); i++) {
+		boolean move = false;
+		for (int i=0; !move && i<birdShop.size(); i++) {
 			if (i!=0 && command.equalsIgnoreCase("BirdPrev" + i)) { // dari i ke i-1
 				((BirdShop) ((BirdShop) birdShop.get(i)).getPrevBird()).setButton(bird, birdPurchase);
 				cardManagerBird.show(birdArea, "birdShop" + (i-1));
+				move = true;
 			} else if (i!=birdShop.size()-1 && command.equalsIgnoreCase("BirdNext" + i)) { // dari i ke i+1
 				((BirdShop) ((BirdShop) birdShop.get(i)).getNextBird()).setButton(bird, birdPurchase);
 				cardManagerBird.show(birdArea, "birdShop" + (i+1));
+				move = true;
 			} 
 		}
 	}
