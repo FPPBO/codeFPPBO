@@ -218,7 +218,7 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 						found = true;
 					}
 				}
-				for (int i=0; !found && i<easyPanel.getMaxLevel(); i++) {
+				for (int i=0; !found && i<hardPanel.getMaxLevel(); i++) {
 					if (command.equalsIgnoreCase("Hard" + (i+1))) {
 						flappyBirdHard = new FlappyBirdHard(this, areaWidth, areaHeight, bird, hardPanel.getTargetLevel(i));
 						add(flappyBirdHard, "flappyBirdHard");
