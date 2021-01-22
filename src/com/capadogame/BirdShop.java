@@ -16,6 +16,8 @@ public class BirdShop extends JPanel {
 	private GridBagConstraints c;
 	private BoxLayout boxLayoutP;
 	private JPanel prevBird, nextBird;
+	private final Color gray = new Color(217, 217, 217);
+	private final Color orange = new Color(255, 222, 89);
 	
 	public BirdShop (ShopPanel parent, int areaWidth, int areaHeight, 
 			Bird bird, Boolean[] birdPurchase, int type) {
@@ -92,7 +94,7 @@ public class BirdShop extends JPanel {
 				bird.setType(type);
 				jbSelect.setEnabled(false);
 				jbSelect.setText("Selected");
-				jbSelect.setBackground(new Color(217, 217, 217));
+				jbSelect.setBackground(gray);
 			}
 		});
 		
@@ -181,26 +183,26 @@ public class BirdShop extends JPanel {
 		if (birdPurchase[type] == true) { // sudah dibeli
 			jbPurchase.setEnabled(false);
 			jbPurchase.setText("Purchased");
-			jbPurchase.setBackground(new Color(217, 217, 217));
+			jbPurchase.setBackground(gray);
 			
 			if (bird.getType() == type) {
 				jbSelect.setEnabled(false);
 				jbSelect.setText("Selected");
-				jbSelect.setBackground(new Color(217, 217, 217));
+				jbSelect.setBackground(gray);
 			} else {
 				jbSelect.setEnabled(true);
 				jbSelect.setText("Select");
-				jbSelect.setBackground(new Color(255, 222, 89));
+				jbSelect.setBackground(orange);
 			}
 			
 		} else { // belum dibeli
 			jbPurchase.setEnabled(true);
 			jbPurchase.setText("Purchase");
-			jbPurchase.setBackground(new Color(255, 222, 89));
+			jbPurchase.setBackground(orange);
 			
 			jbSelect.setEnabled(false);
 			jbSelect.setText("Select");
-			jbSelect.setBackground(new Color(217, 217, 217));
+			jbSelect.setBackground(gray);
 		}
 	}
 	
