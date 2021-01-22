@@ -117,7 +117,7 @@ public class CardLayoutWindow extends Frame implements WindowListener, ActionLis
 						mediumPanel.setFileNameClearLevel(profile.getUsername());
 						hardPanel.setFileNameClearLevel(profile.getUsername());
 						shopPanel.setFileNameBirdPurchase(profile.getUsername());
-						profilePanel.setFilenameProfile(profile.getUsername());
+						profilePanel.setFileNameProfile(profile.getUsername());
 						changeProfile = true;
 					}
 					startPanel.repaint();
